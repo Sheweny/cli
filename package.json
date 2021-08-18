@@ -1,0 +1,39 @@
+{
+  "name": "cli",
+  "description": "Cli for sheweny framework",
+  "version": "1.0.0",
+  "main": "lib/index.js",
+  "directories": {
+    "lib": "lib",
+    "test": "test"
+  },
+  "scripts": {
+    "build": "tsc",
+    "build:typing": "tsc --build tsconfig.typing.json"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Sheweny/cli.git"
+  },
+  "keywords": [
+    "cli",
+    "sheweny",
+    "framework",
+    "discord",
+    "discord.js"
+  ],
+  "author": "Smaug6739 Natchi8537",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Sheweny/cli/issues"
+  },
+  "homepage": "https://github.com/Sheweny/cli#readme",
+  "dependencies": {
+    "ejs": "^3.1.6"
+  },
+  "devDependencies": {
+    "@types/ejs": "^3.1.0",
+    "@types/node": "^16.6.1",
+    "eslint": "^7.32.0"
+  }
+}
