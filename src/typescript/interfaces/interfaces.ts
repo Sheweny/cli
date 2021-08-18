@@ -1,7 +1,10 @@
 export interface IOptions {
-	handlers: {
-		commands: boolean;
-		slashCommands: boolean;
-		events: boolean;
-	}
+  executeType: "create" | "add";
+  dirName?: string;
+  addType?: string;
+  targetDirectory?: string;
+  templateDirectory?: string;
+  template?: "javascript" | "typescript";
+  skipPrompts: boolean;
+  packageManager?: "npm" | "yarn";
 }
