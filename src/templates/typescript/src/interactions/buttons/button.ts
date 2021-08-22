@@ -17,7 +17,7 @@ export class ButtonTest extends Button {
         await button.reply({ content: "You have clicked on **primary** button !" });
         break;
       case "secondaryId":
-        awaitnbutton.reply({ content: "You have clicked on **secondary** button !" });
+        await button.reply({ content: "You have clicked on **secondary** button !" });
         break;
       case "successId":
         await button.reply({ content: "You have clicked on **success** button !" });
