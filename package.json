@@ -2,14 +2,10 @@
   "name": "cli",
   "description": "Cli for sheweny framework",
   "version": "1.0.0",
-  "main": "lib/index.js",
+  "main": "lib/cli.js",
   "bin": {
     "sheweny": "bin/sheweny",
     "shw": "bin/sheweny"
-  },
-  "directories": {
-    "lib": "lib",
-    "test": "test"
   },
   "scripts": {
     "build": "tsc"

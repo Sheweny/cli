@@ -1,5 +1,4 @@
 {
-  "version": "2.4.2",
   "compilerOptions": {
     "lib": ["ES2021"],
     "target": "ES2021",
@@ -7,15 +6,9 @@
     "noEmitOnError": true,
     "strict": true,
     "moduleResolution": "node",
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
     "sourceMap": false,
-    "outDir": "./lib",
-    "rootDir": "./src",
-    "removeComments": false,
-    "noImplicitAny": true,
-    "noUnusedLocals": false,
-    "noUnusedParameters": false
+    "outDir": "./lib"
   },
-  "exclude": ["node_modules", "test"]
+  "include": ["src"],
+  "exclude": ["node_modules"]
 }
