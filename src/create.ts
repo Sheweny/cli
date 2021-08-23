@@ -211,39 +211,25 @@ async function copyFiles(
 async function addScriptsPackage(options: ICreateOptions): Promise<void> {
   const filePath = join(options.targetDirectory!, "package.json");
   let file = (await readFile(filePath)).toString();
-  const scripts = `${
-    options.packageManager === "yarn" ? `"license": "MIT",` : ""
-  }  "scripts": {
+  const scripts = `  "scripts": {
     "start": "node ./src/index${options.template === "javascript" ? ".js" : ".ts"}"${
     options.optionnalLibrary?.includes("nodemon")
       ? `,
     "dev": "nodemon ./src/index.js"`
       : options.optionnalLibrary?.includes("ts-node-dev")
       ? `,
-    "dev": "tsnd --respawn --transpile-only --cls ./src/index.ts`
+    "dev": "tsnd --respawn --transpile-only --cls ./src/index.ts"`
       : ""
   }
-  }${
-    options.packageManager === "yarn"
-      ? `
-}`
-      : ","
-  }`;
+  },`;
   if (options.template === "typescript")
     file = file.replace(`  "main": "index.js",`, `  "main": "dist/index.js",`);
-  file =
-    options.packageManager === "yarn"
-      ? file.replace(
-          `  "license": "MIT"
-}`,
-          scripts
-        )
-      : file.replace(
-          `  "scripts": {
+  file = file.replace(
+    `  "scripts": {
     "test": "echo \\"Error: no test specified\\" && exit 1"
   },`,
-          scripts
-        );
+    scripts
+  );
   await writeFile(filePath, file);
 }
 
@@ -280,26 +266,14 @@ export async function createProject(options: ICreateOptions): Promise<any> {
     {
       title: "Creating package.json file",
       task: async () => {
-        const yarnError = (await execa("yarn", ["--version"])).failed;
-
-        if (options.packageManager === "yarn" && yarnError) {
-          await execa("npm", ["init", "-y"], {
-            cwd: options.targetDirectory,
-          });
-        } else if (options.packageManager === "yarn" && !yarnError) {
-          await execa("yarn", ["init", "-y"], {
-            cwd: options.targetDirectory,
-          });
-        } else {
-          await execa("npm", ["init", "-y"], {
-            cwd: options.targetDirectory,
-          });
-        }
+        await execa("npm", ["init", "-y"], {
+          cwd: options.targetDirectory,
+        });
       },
     },
     {
-      title: `Install packages with ${options.packageManager}`,
-      enabled: () => options.packageManager !== undefined,
+      title: `Install packages with yarn`,
+      enabled: () => options.packageManager === "yarn",
       task: async (ctx, task) => {
         const yarnError = (await execa("yarn", ["--version"])).failed;
 
@@ -314,7 +288,22 @@ export async function createProject(options: ICreateOptions): Promise<any> {
           await addScriptsPackage(options);
           await execa(
             "yarn",
-            ["add", "discord.js@13.1.0"].concat(options.optionnalLibrary!),
+            ["add", "discord.js@13.1.0"].concat(
+              options.optionnalLibrary!.filter(
+                (e) => e !== "nodemon" && e !== "ts-node-dev"
+              )
+            ),
+            {
+              cwd: options.targetDirectory,
+            }
+          );
+          await execa(
+            "yarn",
+            ["add", "-D"].concat(
+              options.optionnalLibrary!.filter(
+                (e) => e === "nodemon" || e === "ts-node-dev"
+              )
+            ),
             {
               cwd: options.targetDirectory,
             }
@@ -326,13 +315,28 @@ export async function createProject(options: ICreateOptions): Promise<any> {
     },
     {
       title: "Install packages with npm",
-      enabled: (ctx) => options.packageManager !== undefined && ctx.yarn === false,
+      enabled: (ctx) => options.packageManager === "npm" || ctx.yarn === false,
       task: async (ctx, task) => {
         try {
           await addScriptsPackage(options);
           await execa(
             "npm",
-            ["install", "--save", "discord.js@13.1.0"].concat(options.optionnalLibrary!),
+            ["install", "--save", "discord.js@13.1.0"].concat(
+              options.optionnalLibrary!.filter(
+                (e) => e !== "nodemon" && e !== "ts-node-dev"
+              )
+            ),
+            {
+              cwd: options.targetDirectory,
+            }
+          );
+          await execa(
+            "npm",
+            ["install", "--save-dev"].concat(
+              options.optionnalLibrary!.filter(
+                (e) => e === "nodemon" || e === "ts-node-dev"
+              )
+            ),
             {
               cwd: options.targetDirectory,
             }
