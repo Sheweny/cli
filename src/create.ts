@@ -1,8 +1,7 @@
 import { prompt } from "inquirer";
 import { mkdir, access, readdir, stat, writeFile, readFile } from "fs/promises";
 import { constants, existsSync } from "fs";
-import { join, resolve, extname } from "path";
-// import chalk from "chalk";
+import { join, resolve } from "path";
 import { ICreateOptions } from "./typescript/interfaces/interfaces";
 import * as Listr from "listr";
 import * as execa from "execa";
@@ -156,7 +155,7 @@ async function getTemplateDirectory(options: ICreateOptions): Promise<ICreateOpt
   try {
     const templateDir = resolve(
       require.main!.path,
-      "../lib/templates",
+      "../lib/templates/create",
       options.template!
     );
     await access(templateDir, constants.R_OK);

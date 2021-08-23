@@ -1,9 +1,11 @@
 import * as arg from "arg";
 import * as chalk from "chalk";
 import { createProject, missingCreateOptions } from "./create";
+import { missingAddOptions, addTemplate } from "./add";
 import { ICreateOptions, IAddOptions } from "./typescript/interfaces/interfaces";
+import { readdir } from "fs/promises";
 
-function getArgs(rawArgs: string[]): ICreateOptions | IAddOptions {
+async function getArgs(rawArgs: string[]): Promise<ICreateOptions | IAddOptions> {
   const args = arg(
     {
       "--yes": Boolean,
@@ -27,10 +29,14 @@ function getArgs(rawArgs: string[]): ICreateOptions | IAddOptions {
 
   let secondaryArg: string | undefined = args._[1];
   if (executeType === "add") {
+    if (!(await readdir(process.cwd())).includes("cli-config.json")) {
+      console.log(`${chalk.red.bold("ERROR")} cli-config not found`);
+      return process.exit(1);
+    }
     secondaryArg = secondaryArg ? secondaryArg.toLowerCase() : undefined;
     if (
       !secondaryArg ||
-      (secondaryArg && secondaryArg !== "command" && secondaryArg !== "event")
+      (secondaryArg && secondaryArg !== "command" && secondaryArg !== "event" && secondaryArg !== "button" && secondaryArg !== "selectmenu" && secondaryArg !== "inhibitor")
     ) {
       console.log(`${chalk.red.bold("ERROR")} Invalid type add`);
       return process.exit(1);
@@ -41,15 +47,20 @@ function getArgs(rawArgs: string[]): ICreateOptions | IAddOptions {
     executeType,
     skipPrompts: args["--yes"] || false,
     dirName: executeType === "create" ? secondaryArg : undefined,
-    addType: executeType === "add" ? (secondaryArg as "command" | "event") : undefined,
+    addType:
+      executeType === "add"
+        ? (secondaryArg as "command" | "event" | "button" | "selectmenu" | "inhibitor")
+        : undefined,
   };
 }
 
 export async function cli(args: string[]): Promise<void> {
-  let options = getArgs(args);
+  let options = await getArgs(args);
   if (options.executeType === "create") {
     options = await missingCreateOptions(options);
     await createProject(options);
   } else if (options.executeType === "add") {
+    options = await missingAddOptions(options);
+    await addTemplate(options);
   }
 }
