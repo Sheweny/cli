@@ -211,25 +211,39 @@ async function copyFiles(
 async function addScriptsPackage(options: ICreateOptions): Promise<void> {
   const filePath = join(options.targetDirectory!, "package.json");
   let file = (await readFile(filePath)).toString();
-  file = file.replace(
-    `  }
-}
-`,
-    `  },
-  "scripts": {
+  const scripts = `${
+    options.packageManager === "yarn" ? `"license": "MIT",` : ""
+  }  "scripts": {
     "start": "node ./src/index${options.template === "javascript" ? ".js" : ".ts"}"${
-      file.indexOf("nodemon") !== -1
-        ? `,
+    options.optionnalLibrary?.includes("nodemon")
+      ? `,
     "dev": "nodemon ./src/index.js"`
-        : file.indexOf("ts-node-dev") !== -1
-        ? `,
+      : options.optionnalLibrary?.includes("ts-node-dev")
+      ? `,
     "dev": "tsnd --respawn --transpile-only --cls ./src/index.ts`
-        : ""
-    }
+      : ""
   }
-}
-`
-  );
+  }${
+    options.packageManager === "yarn"
+      ? `
+}`
+      : ","
+  }`;
+  if (options.template === "typescript")
+    file = file.replace(`  "main": "index.js",`, `  "main": "dist/index.js",`);
+  file =
+    options.packageManager === "yarn"
+      ? file.replace(
+          `  "license": "MIT"
+}`,
+          scripts
+        )
+      : file.replace(
+          `  "scripts": {
+    "test": "echo \\"Error: no test specified\\" && exit 1"
+  },`,
+          scripts
+        );
   await writeFile(filePath, file);
 }
 
@@ -297,6 +311,7 @@ export async function createProject(options: ICreateOptions): Promise<any> {
         }
 
         try {
+          await addScriptsPackage(options);
           await execa(
             "yarn",
             ["add", "discord.js@13.1.0"].concat(options.optionnalLibrary!),
@@ -304,7 +319,6 @@ export async function createProject(options: ICreateOptions): Promise<any> {
               cwd: options.targetDirectory,
             }
           );
-          await addScriptsPackage(options);
         } catch (err) {
           task.skip("An error has occurred");
         }
@@ -315,6 +329,7 @@ export async function createProject(options: ICreateOptions): Promise<any> {
       enabled: (ctx) => options.packageManager !== undefined && ctx.yarn === false,
       task: async (ctx, task) => {
         try {
+          await addScriptsPackage(options);
           await execa(
             "npm",
             ["install", "--save", "discord.js@13.1.0"].concat(options.optionnalLibrary!),
@@ -322,7 +337,6 @@ export async function createProject(options: ICreateOptions): Promise<any> {
               cwd: options.targetDirectory,
             }
           );
-          await addScriptsPackage(options);
         } catch (err) {
           task.skip("An error has occurred");
         }
