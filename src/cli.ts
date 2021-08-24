@@ -66,7 +66,8 @@ Run "${chalk.yellow} --help add" for more informations`);
     executeType,
     help: args["--help"] || false,
     skipPrompts: args["--yes"] || false,
-    dirName: executeType === "create" ? secondaryArg : undefined,
+    dirName:
+      executeType === "create" ? args._.filter((v, i) => i !== 0).join("_") : undefined,
     addType:
       executeType === "add"
         ? (secondaryArg as "command" | "event" | "button" | "selectmenu" | "inhibitor")

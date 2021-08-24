@@ -102,7 +102,7 @@ export async function missingCreateOptions(
 
   return {
     ...options,
-    dirName: options.dirName || answers.dirName,
+    dirName: options.dirName || answers.dirName.replaceAll(" ", "_"),
     template: answers.template.toLowerCase(),
     packageManager: answers.packageManager
       ? answers.packageManager.toLowerCase()
