@@ -55,7 +55,6 @@ export async function missingCreateOptions(
         ["@discordjs/voice"].concat(
           answers.template === "Javascript" ? "nodemon" : "ts-node-dev"
         ),
-      when: (answers) => answers.runInstall,
     },
     {
       type: "confirm",
@@ -168,7 +167,9 @@ async function getTemplateDirectory(options: ICreateOptions): Promise<ICreateOpt
     };
     return options;
   } catch (err) {
-    console.log(`${chalk.red.bold("ERROR")} An error occurred while retrieving the template`);
+    console.log(
+      `${chalk.red.bold("ERROR")} An error occurred while retrieving the template`
+    );
     return process.exit(1);
   }
 }
@@ -210,29 +211,52 @@ async function copyFiles(
   }
 }
 
-async function addScriptsPackage(options: ICreateOptions): Promise<void> {
+async function addInfosPackageJson(options: ICreateOptions): Promise<void> {
   const filePath = join(options.targetDirectory!, "package.json");
-  let file = (await readFile(filePath)).toString();
-  const scripts = `  "scripts": {
-    "start": "node ./src/index${options.template === "javascript" ? ".js" : ".ts"}"${
-    options.optionnalLibrary?.includes("nodemon")
-      ? `,
-    "dev": "nodemon ./src/index.js"`
-      : options.optionnalLibrary?.includes("ts-node-dev")
-      ? `,
-    "dev": "tsnd --respawn --transpile-only --cls ./src/index.ts"`
-      : ""
-  }
-  },`;
-  if (options.template === "typescript")
-    file = file.replace(`  "main": "index.js",`, `  "main": "dist/index.js",`);
-  file = file.replace(
-    `  "scripts": {
-    "test": "echo \\"Error: no test specified\\" && exit 1"
-  },`,
-    scripts
-  );
-  await writeFile(filePath, file);
+  let file = await import(filePath);
+  const scriptsJs = options.optionnalLibrary?.includes("nodemon")
+    ? {
+        start: "node ./src/index.js",
+        dev: "nodemon ./src/index.js",
+      }
+    : {
+        start: "node ./src/index.js",
+      };
+  const scriptsTs = options.optionnalLibrary?.includes("ts-node-dev")
+    ? {
+        start: "node ./build/index.js",
+        dev: "tsnd --respawn --transpile-only --cls ./src/index.ts",
+        build: "tsc",
+      }
+    : {
+        start: "node ./build/index.js",
+        build: "tsc",
+      };
+  const dependencies = options.optionnalLibrary?.includes("@discordjs/voice")
+    ? {
+        "discord.js": "^13.1.0",
+        "@discordjs/voice": "*",
+      }
+    : {
+        "discord.js": "^13.1.0",
+      };
+  const devDependenciesJs = options.optionnalLibrary?.includes("nodemon")
+    ? {
+        nodemon: "*",
+      }
+    : {};
+  const devDependenciesTs = options.optionnalLibrary?.includes("ts-node-dev")
+    ? {
+        typescript: "*",
+        "ts-node-dev": "*",
+      }
+    : { typescript: "*" };
+  if (options.template === "typescript") file.main = "dist/index.js";
+  file.scripts = options.template === "javascript" ? scriptsJs : scriptsTs;
+  file.dependencies = dependencies;
+  file.devDependencies =
+    options.template === "javascript" ? devDependenciesJs : devDependenciesTs;
+  await writeFile(filePath, JSON.stringify(file));
 }
 
 export async function createProject(options: ICreateOptions): Promise<any> {
@@ -274,7 +298,9 @@ export async function createProject(options: ICreateOptions): Promise<any> {
           await execa("npm", ["init", "-y"], {
             cwd: options.targetDirectory,
           });
+          await addInfosPackageJson(options);
         } catch (err) {
+          console.log(err);
           task.skip("An error has occurred");
         }
       },
@@ -293,29 +319,9 @@ export async function createProject(options: ICreateOptions): Promise<any> {
         }
 
         try {
-          await addScriptsPackage(options);
-          await execa(
-            "yarn",
-            ["add", "discord.js@13.1.0", "sheweny"].concat(
-              options.optionnalLibrary!.filter(
-                (e) => e !== "nodemon" && e !== "ts-node-dev"
-              )
-            ),
-            {
-              cwd: options.targetDirectory,
-            }
-          );
-          await execa(
-            "yarn",
-            ["add", "-D"].concat(
-              options.optionnalLibrary!.filter(
-                (e) => e === "nodemon" || e === "ts-node-dev"
-              )
-            ),
-            {
-              cwd: options.targetDirectory,
-            }
-          );
+          await execa("yarn", ["add"], {
+            cwd: options.targetDirectory,
+          });
         } catch (err) {
           task.skip("An error has occurred");
         }
@@ -326,29 +332,9 @@ export async function createProject(options: ICreateOptions): Promise<any> {
       enabled: (ctx) => options.packageManager === "npm" || ctx.yarn === false,
       task: async (ctx, task) => {
         try {
-          await addScriptsPackage(options);
-          await execa(
-            "npm",
-            ["install", "--save", "discord.js@13.1.0", "sheweny"].concat(
-              options.optionnalLibrary!.filter(
-                (e) => e !== "nodemon" && e !== "ts-node-dev"
-              )
-            ),
-            {
-              cwd: options.targetDirectory,
-            }
-          );
-          await execa(
-            "npm",
-            ["install", "--save-dev"].concat(
-              options.optionnalLibrary!.filter(
-                (e) => e === "nodemon" || e === "ts-node-dev"
-              )
-            ),
-            {
-              cwd: options.targetDirectory,
-            }
-          );
+          await execa("npm", ["install"], {
+            cwd: options.targetDirectory,
+          });
         } catch (err) {
           task.skip("An error has occurred");
         }
@@ -373,7 +359,7 @@ export async function createProject(options: ICreateOptions): Promise<any> {
         )} ${chalk.blue(`cd ${options.dirName!}`)}\n${
           options.packageManager
             ? ` ${chalk.grey("$")} ${chalk.blue(`${options.packageManager!} start`)}\n`
-            : ""
+            : ` ${chalk.grey("$")} ${chalk.blue(`npm install`)}\n`
         }`
       );
     })
