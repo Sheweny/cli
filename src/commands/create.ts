@@ -2,9 +2,10 @@ import { prompt } from "inquirer";
 import { mkdir, access, readdir, stat, writeFile, readFile } from "fs/promises";
 import { constants, existsSync } from "fs";
 import { join, resolve } from "path";
-import { ICreateOptions } from "./typescript/interfaces/interfaces";
+import { ICreateOptions } from "../typescript/interfaces/interfaces";
 import * as Listr from "listr";
 import * as execa from "execa";
+import * as chalk from "chalk";
 
 export async function missingCreateOptions(
   options: ICreateOptions
@@ -15,6 +16,8 @@ export async function missingCreateOptions(
       dirName: options.dirName || "Project_Bot",
       template: "javascript",
     };
+
+  console.log(`\n📜 Please answer the questionnaires to get a better result\n`);
 
   const answers = await prompt([
     {
@@ -146,7 +149,7 @@ async function createDirProject(options: ICreateOptions): Promise<ICreateOptions
     };
     return options;
   } catch (err) {
-    console.error(err);
+    console.log(`${chalk.red.bold("ERROR")} An error occurred while creating the folder`);
     return process.exit(1);
   }
 }
@@ -165,7 +168,7 @@ async function getTemplateDirectory(options: ICreateOptions): Promise<ICreateOpt
     };
     return options;
   } catch (err) {
-    console.error(err);
+    console.log(`${chalk.red.bold("ERROR")} An error occurred while retrieving the template`);
     return process.exit(1);
   }
 }
@@ -202,7 +205,7 @@ async function copyFiles(
       }
     }
   } catch (err) {
-    console.error(err);
+    console.log(`${chalk.red.bold("ERROR")} An error occurred while copying the files`);
     return process.exit(1);
   }
 }
@@ -233,21 +236,23 @@ async function addScriptsPackage(options: ICreateOptions): Promise<void> {
 }
 
 export async function createProject(options: ICreateOptions): Promise<any> {
+  console.log("");
+
   const tasks = new Listr([
     {
-      title: "Creating Project folder",
+      title: " 📁 Creating Project folder",
       task: async () => {
         options = await createDirProject(options);
       },
     },
     {
-      title: `Getting ${options.template!} template`,
+      title: ` 🧮 Getting ${options.template!} template`,
       task: async () => {
         options = await getTemplateDirectory(options);
       },
     },
     {
-      title: "Git init",
+      title: " ⚙️ Git init",
       enabled: () => options.git === true,
       task: async (ctx, task) => {
         const gitError = (await execa("git", ["--version"])).failed;
@@ -263,15 +268,19 @@ export async function createProject(options: ICreateOptions): Promise<any> {
       },
     },
     {
-      title: "Creating package.json file",
-      task: async () => {
-        await execa("npm", ["init", "-y"], {
-          cwd: options.targetDirectory,
-        });
+      title: " 📑 Creating package.json file",
+      task: async (ctx, task) => {
+        try {
+          await execa("npm", ["init", "-y"], {
+            cwd: options.targetDirectory,
+          });
+        } catch (err) {
+          task.skip("An error has occurred");
+        }
       },
     },
     {
-      title: `Install packages with yarn`,
+      title: ` 🗃️ Install packages with yarn`,
       enabled: () => options.packageManager === "yarn",
       task: async (ctx, task) => {
         const yarnError = (await execa("yarn", ["--version"])).failed;
@@ -287,7 +296,7 @@ export async function createProject(options: ICreateOptions): Promise<any> {
           await addScriptsPackage(options);
           await execa(
             "yarn",
-            ["add", "discord.js@13.1.0"].concat(
+            ["add", "discord.js@13.1.0", "sheweny"].concat(
               options.optionnalLibrary!.filter(
                 (e) => e !== "nodemon" && e !== "ts-node-dev"
               )
@@ -313,14 +322,14 @@ export async function createProject(options: ICreateOptions): Promise<any> {
       },
     },
     {
-      title: "Install packages with npm",
+      title: " 🗃️ Install packages with npm",
       enabled: (ctx) => options.packageManager === "npm" || ctx.yarn === false,
       task: async (ctx, task) => {
         try {
           await addScriptsPackage(options);
           await execa(
             "npm",
-            ["install", "--save", "discord.js@13.1.0"].concat(
+            ["install", "--save", "discord.js@13.1.0", "sheweny"].concat(
               options.optionnalLibrary!.filter(
                 (e) => e !== "nodemon" && e !== "ts-node-dev"
               )
@@ -346,12 +355,29 @@ export async function createProject(options: ICreateOptions): Promise<any> {
       },
     },
     {
-      title: `Copying files`,
+      title: ` 🖨️ Copying files`,
       task: async () => {
         await copyFiles(options);
       },
     },
   ]);
 
-  await tasks.run();
+  tasks
+    .run()
+    .then(() => {
+      console.log(
+        `\n🎉 Successfully created project ${chalk.yellow(
+          options.dirName!
+        )} !\n👉 Get started with the following commands:\n\n ${chalk.grey(
+          "$"
+        )} ${chalk.blue(`cd ${options.dirName!}`)}\n${
+          options.packageManager
+            ? ` ${chalk.grey("$")} ${chalk.blue(`${options.packageManager!} start`)}\n`
+            : ""
+        }`
+      );
+    })
+    .catch(() => {
+      console.log(`${chalk.red.bold("ERROR")} An error has occurred`);
+    });
 }

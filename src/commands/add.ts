@@ -1,16 +1,20 @@
+import * as chalk from "chalk";
 import { constants, existsSync } from "fs";
 import { access, writeFile } from "fs/promises";
 import { prompt } from "inquirer";
 import * as Listr from "listr";
 import { join, resolve } from "path";
-import { IAddOptions, ICliConfig } from "./typescript/interfaces/interfaces";
+import { IAddOptions, ICliConfig } from "../typescript/interfaces/interfaces";
 
 export async function missingAddOptions(options: IAddOptions): Promise<IAddOptions> {
   if (options.skipPrompts)
     return {
       ...options,
       addName: "exampleTemplate",
+      commandType: "MessageCommand",
     };
+
+  console.log(`\n📜 Please answer the questionnaires to get a better result\n`);
 
   const answers: any = await prompt([
     {
@@ -151,7 +155,11 @@ async function getTemplateDirectory(options: IAddOptions): Promise<IAddOptions> 
     };
     return options;
   } catch (err) {
-    console.error(err);
+    console.log(
+      `${chalk.red.bold(
+        "ERROR"
+      )} The path for the ${options.addType!} template is not found`
+    );
     return process.exit(1);
   }
 }
@@ -186,7 +194,9 @@ async function checkPath(options: IAddOptions): Promise<IAddOptions> {
     };
     return options;
   } catch (err) {
-    console.error(err);
+    console.log(
+      `${chalk.red.bold("ERROR")} The path for ${options.addType!} handler doesn't exist`
+    );
     return process.exit(1);
   }
 }
@@ -199,36 +209,49 @@ async function creatingTemplate(options: IAddOptions): Promise<void> {
 }
 
 export async function addTemplate(options: IAddOptions): Promise<any> {
+  console.log("");
+
   const tasks = new Listr([
     {
-      title: "Getting CLI infos",
+      title: " ⚙️ Getting CLI infos",
       task: async () => {
         options = await gettingCliInfos(options);
       },
     },
     {
-      title: `Getting template for ${options.addType}`,
+      title: ` 🧮 Getting template for ${options.addType}`,
       task: async () => {
         options = await getTemplateDirectory(options);
       },
     },
     {
-      title: "Check if the path exists",
+      title: " 📁 Check if the path exists",
       task: async () => {
         if (handlersDir(options) === null) {
-          console.log("Folder not found");
+          console.log(
+            `${chalk.red.bold(
+              "ERROR"
+            )} The path for ${options.addType!} handler is null\nChange cli-config.json to correct this`
+          );
           return process.exit(1);
         }
         options = await checkPath(options);
       },
     },
     {
-      title: `Creating ${options.addType} template`,
+      title: ` 🖨️ Creating ${options.addType} template`,
       task: async () => {
         await creatingTemplate(options);
       },
     },
   ]);
 
-  await tasks.run();
+  tasks
+    .run()
+    .then(() => {
+      console.log(`\n🎉 Successfully add ${chalk.green(options.addType!)} template\n`);
+    })
+    .catch(() => {
+      console.log(`${chalk.red.bold("ERROR")} An error has occurred`);
+    });
 }
