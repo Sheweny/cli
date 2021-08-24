@@ -5,6 +5,7 @@ export = (options: IAddOptions) => {
     options.config!.template === "javascript"
       ? `const { Button } = require("sheweny");`
       : `import { Button, ShewenyClient } from "sheweny";
+import type { ShewenyClient } from "sheweny";
 import type { ButtonInteraction } from "discord.js";`
   }
 

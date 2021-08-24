@@ -4,7 +4,8 @@ export = (options: IAddOptions) => {
   return `${
     options.config!.template === "javascript"
       ? `const { SelectMenu } = require("sheweny");`
-      : `import { SelectMenu, ShewenyClient } from "sheweny";
+      : `import { SelectMenu } from "sheweny";
+import type { ShewenyClient } from "sheweny";
 import type { SelectMenuInteraction } from "discord.js";`
   }
 
