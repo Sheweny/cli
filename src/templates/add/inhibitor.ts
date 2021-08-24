@@ -4,7 +4,8 @@ export = (options: IAddOptions) => {
   return `${
     options.config!.template === "javascript"
       ? `const { Inhibitor } = require("sheweny");`
-      : `import { Inhibitor, ShewenyClient } from "sheweny";
+      : `import { Inhibitor } from "sheweny";
+import type { ShewenyClient } from "sheweny";
 import type { CommandInteraction } from "discord.js";`
   }
 

@@ -11,7 +11,8 @@ export = (options: IAddOptions) => {
       return `${
         options.config!.template === "javascript"
           ? `const { ApplicationCommand } = require("sheweny");`
-          : `import { ApplicationCommand, ShewenyClient } from "sheweny";
+          : `import { ApplicationCommand } from "sheweny";
+import type { ShewenyClient } from "sheweny";
 import type { ${importDjs} } from "discord.js";`
       }
 
