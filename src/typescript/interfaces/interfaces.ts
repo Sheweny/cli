@@ -1,5 +1,6 @@
 export interface ICreateOptions {
-  executeType: "create";
+  executeType?: "create";
+  help: boolean;
   dirName?: string;
   targetDirectory?: string;
   templateDirectory?: string;
@@ -15,7 +16,8 @@ export interface ICreateOptions {
 }
 
 export interface IAddOptions {
-  executeType: "add";
+  executeType?: "add";
+  help: boolean;
   skipPrompts?: boolean;
   addType?: "command" | "event" | "button" | "selectmenu" | "inhibitor";
   addName?: string;
