@@ -224,12 +224,12 @@ async function addInfosPackageJson(options: ICreateOptions): Promise<void> {
       };
   const scriptsTs = options.optionnalLibrary?.includes("ts-node-dev")
     ? {
-        start: "node ./build/index.js",
+        start: "node ./dist/index.js",
         dev: "tsnd --respawn --transpile-only --cls ./src/index.ts",
         build: "tsc",
       }
     : {
-        start: "node ./build/index.js",
+        start: "node ./dist/index.js",
         build: "tsc",
       };
   const dependencies = options.optionnalLibrary?.includes("@discordjs/voice")
@@ -258,7 +258,7 @@ async function addInfosPackageJson(options: ICreateOptions): Promise<void> {
   file.dependencies = dependencies;
   file.devDependencies =
     options.template === "javascript" ? devDependenciesJs : devDependenciesTs;
-  await writeFile(filePath, JSON.stringify(file));
+  await writeFile(filePath, JSON.stringify(file, null, 4));
 }
 
 export async function createProject(options: ICreateOptions): Promise<any> {
