@@ -235,10 +235,12 @@ async function addInfosPackageJson(options: ICreateOptions): Promise<void> {
   const dependencies = options.optionnalLibrary?.includes("@discordjs/voice")
     ? {
         "discord.js": "^13.1.0",
+        sheweny: "*",
         "@discordjs/voice": "*",
       }
     : {
         "discord.js": "^13.1.0",
+        sheweny: "*",
       };
   const devDependenciesJs = options.optionnalLibrary?.includes("nodemon")
     ? {
