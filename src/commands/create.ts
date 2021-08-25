@@ -141,9 +141,6 @@ async function createDirProject(options: ICreateOptions): Promise<ICreateOptions
   try {
     options = await renameDirName(options);
     const pathDir = join(process.cwd(), options.dirName!);
-    console.log("Path dir");
-
-    console.log(pathDir);
 
     await mkdir(pathDir);
     options = {
@@ -306,7 +303,6 @@ export async function createProject(options: ICreateOptions): Promise<any> {
           });
           await addInfosPackageJson(options);
         } catch (err) {
-          console.log(err);
           task.skip("An error has occurred");
         }
       },
@@ -329,7 +325,6 @@ export async function createProject(options: ICreateOptions): Promise<any> {
             cwd: options.targetDirectory,
           });
         } catch (err) {
-          console.log(err);
           task.skip("An error has occurred");
         }
       },
