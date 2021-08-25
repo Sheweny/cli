@@ -1,2 +1,5 @@
 node_modules
 src
+.eslintrc
+.prettierrc
+tsconfig.json
