@@ -141,6 +141,10 @@ async function createDirProject(options: ICreateOptions): Promise<ICreateOptions
   try {
     options = await renameDirName(options);
     const pathDir = join(process.cwd(), options.dirName!);
+    console.log("Path dir");
+
+    console.log(pathDir);
+
     await mkdir(pathDir);
     options = {
       ...options,
@@ -235,12 +239,12 @@ async function addInfosPackageJson(options: ICreateOptions): Promise<void> {
   const dependencies = options.optionnalLibrary?.includes("@discordjs/voice")
     ? {
         "discord.js": "^13.1.0",
-        sheweny: "*",
+        sheweny: "1.0.0-beta.2",
         "@discordjs/voice": "*",
       }
     : {
         "discord.js": "^13.1.0",
-        sheweny: "*",
+        sheweny: "1.0.0-beta.2",
       };
   const devDependenciesJs = options.optionnalLibrary?.includes("nodemon")
     ? {
@@ -288,7 +292,7 @@ export async function createProject(options: ICreateOptions): Promise<any> {
           return task.skip("Git not available");
         }
 
-        execa("git", ["init"]).then((res) => {
+        execa("git", ["init", options.dirName!]).then((res) => {
           if (res.failed) return task.skip("An error has occurred");
         });
       },
@@ -321,10 +325,11 @@ export async function createProject(options: ICreateOptions): Promise<any> {
         }
 
         try {
-          await execa("yarn", ["add"], {
+          await execa("yarn", {
             cwd: options.targetDirectory,
           });
         } catch (err) {
+          console.log(err);
           task.skip("An error has occurred");
         }
       },
