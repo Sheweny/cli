@@ -50,7 +50,7 @@ export = (options: ICreateOptions) => {
 
   return [
     `import { ShewenyClient } from "sheweny";
-import config from "../config${options.configFileType === "json" ? ".json" : ""}";
+import config from "./config${options.configFileType === "json" ? ".json" : ""}";
 
 const client = new ShewenyClient({
   intents: ["GUILDS"${intents}],${handlers()}
