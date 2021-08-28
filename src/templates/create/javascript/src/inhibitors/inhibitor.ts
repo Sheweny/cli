@@ -13,7 +13,7 @@ module.exports = class BlackListInhibitor extends Inhibitor {
 
   execute(client, interaction) {
     // Put a guild id
-    return !["<guildId>"].includes(interaction.guildId!);
+    return !["<guildId>"].includes(interaction.guildId);
   }
 
   async onFailure(client, interaction) {

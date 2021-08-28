@@ -102,7 +102,10 @@ export async function missingCreateOptions(
 
   return {
     ...options,
-    dirName: options.dirName || answers.dirName.replaceAll(" ", "_"),
+    dirName:
+      options.dirName || answers.dirName
+        ? answers.dirName.replaceAll(" ", "_")
+        : "Bot project",
     template: answers.template.toLowerCase(),
     packageManager: answers.packageManager
       ? answers.packageManager.toLowerCase()
@@ -263,7 +266,24 @@ async function addInfosPackageJson(options: ICreateOptions): Promise<void> {
 }
 
 export async function createProject(options: ICreateOptions): Promise<any> {
-  console.log("");
+  const majorVersion = parseInt(process.version.split(".")[0]);
+  const minorVersion = parseInt(process.version.split(".")[1]);
+
+  if (majorVersion < 16) {
+    console.log(
+      `${chalk.red.bold(
+        "ERROR"
+      )} You must have nodejs 16.6.0 or higher for use discord.js V13 `
+    );
+    process.exit(1);
+  } else if (majorVersion == 16 && minorVersion < 6) {
+    console.log(
+      `${chalk.red.bold(
+        "ERROR"
+      )} You must have nodejs 16.6.0 or higher for use discord.js V13 `
+    );
+    process.exit(1);
+  }
 
   const tasks = new Listr([
     {
