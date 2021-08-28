@@ -323,7 +323,6 @@ export async function createProject(options: ICreateOptions): Promise<any> {
           });
           await addInfosPackageJson(options);
         } catch (err) {
-          console.log(err);
           task.skip("An error has occurred");
         }
       },
@@ -346,7 +345,6 @@ export async function createProject(options: ICreateOptions): Promise<any> {
             cwd: options.targetDirectory,
           });
         } catch (err) {
-          console.log(err);
           task.skip("An error has occurred");
         }
       },
