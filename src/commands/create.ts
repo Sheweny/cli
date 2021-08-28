@@ -266,8 +266,8 @@ async function addInfosPackageJson(options: ICreateOptions): Promise<void> {
 }
 
 export async function createProject(options: ICreateOptions): Promise<any> {
-  const majorVersion = parseInt("14.00.0".split(".")[0]);
-  const minorVersion = parseInt("14.00.0".split(".")[1]);
+  const majorVersion = parseInt(process.version.split(".")[0]);
+  const minorVersion = parseInt(process.version.split(".")[1]);
 
   if (majorVersion < 16) {
     console.log(
