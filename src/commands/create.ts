@@ -332,9 +332,6 @@ export async function createProject(options: ICreateOptions): Promise<any> {
       title: " 📑 Creating package.json file",
       task: async (ctx, task) => {
         try {
-          // await execa("npm", ["init", "-y"], {
-          //   cwd: options.targetDirectory,
-          // });
           await addInfosPackageJson(options);
         } catch (err) {
           task.skip("An error has occurred");
