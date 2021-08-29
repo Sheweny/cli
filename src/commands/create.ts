@@ -1,6 +1,6 @@
 import { prompt } from "inquirer";
 import { mkdir, access, readdir, stat, writeFile, readFile } from "fs/promises";
-import { constants, existsSync } from "fs";
+import { constants, exists, existsSync } from "fs";
 import { join, resolve } from "path";
 import { ICreateOptions } from "../typescript/interfaces/interfaces";
 import * as Listr from "listr";
@@ -102,10 +102,7 @@ export async function missingCreateOptions(
 
   return {
     ...options,
-    dirName:
-      options.dirName || answers.dirName
-        ? answers.dirName.replaceAll(" ", "_")
-        : "Bot project",
+    dirName: options.dirName || answers.dirName.replaceAll(" ", "_"),
     template: answers.template.toLowerCase(),
     packageManager: answers.packageManager
       ? answers.packageManager.toLowerCase()
@@ -120,8 +117,14 @@ export async function missingCreateOptions(
 }
 
 async function renameDirName(options: ICreateOptions): Promise<ICreateOptions> {
+  if (options.dirName)
+    options.dirName = options.dirName.replaceAll(
+      /<|>|:|"|\/|\\|\||\?|\*|(^(aux|con|clock|nul|prn|com[1-9]|lpt[1-9])$)/gi,
+      ""
+    );
   const pathProject = join(process.cwd(), options.dirName!);
-  if (existsSync(pathProject)) {
+
+  if (existsSync(pathProject) || !options.dirName) {
     const reg = new RegExp(/\_[0-9]{1,2}/);
     const match = options.dirName!.match(reg);
     if (match && match.index === options.dirName!.length - match[0].length) {
@@ -217,7 +220,18 @@ async function copyFiles(
 
 async function addInfosPackageJson(options: ICreateOptions): Promise<void> {
   const filePath = join(options.targetDirectory!, "package.json");
-  let file = await import(filePath);
+  let file = {
+    name: options.dirName,
+    version: "1.0.0",
+    description: "",
+    main: "index.js",
+    scripts: {},
+    dependencies: {},
+    devDependencies: {},
+    keywords: [],
+    author: "",
+    license: "ISC",
+  };
   const scriptsJs = options.optionnalLibrary?.includes("nodemon")
     ? {
         start: "node ./src/index.js",
@@ -262,7 +276,7 @@ async function addInfosPackageJson(options: ICreateOptions): Promise<void> {
   file.dependencies = dependencies;
   file.devDependencies =
     options.template === "javascript" ? devDependenciesJs : devDependenciesTs;
-  await writeFile(filePath, JSON.stringify(file, null, 4));
+  await writeFile(filePath, JSON.stringify(file, null, 2));
 }
 
 export async function createProject(options: ICreateOptions): Promise<any> {
@@ -318,9 +332,6 @@ export async function createProject(options: ICreateOptions): Promise<any> {
       title: " 📑 Creating package.json file",
       task: async (ctx, task) => {
         try {
-          await execa("npm", ["init", "-y"], {
-            cwd: options.targetDirectory,
-          });
           await addInfosPackageJson(options);
         } catch (err) {
           task.skip("An error has occurred");
