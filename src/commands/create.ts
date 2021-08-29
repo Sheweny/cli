@@ -1,6 +1,6 @@
 import { prompt } from "inquirer";
-import { mkdir, access, readdir, stat, writeFile, readFile } from "fs/promises";
-import { constants, exists, existsSync } from "fs";
+import { mkdir, access, readdir, stat, writeFile } from "fs/promises";
+import { constants, existsSync } from "fs";
 import { join, resolve } from "path";
 import { ICreateOptions } from "../typescript/interfaces/interfaces";
 import * as Listr from "listr";
@@ -15,6 +15,10 @@ export async function missingCreateOptions(
       ...options,
       dirName: options.dirName || "Project_Bot",
       template: "javascript",
+      packageManager: "npm",
+      handlers: ["Commands", "Events"],
+      commandType: "ApplicationCommand",
+      configFileType: "json",
     };
 
   console.log(`\n📜 Please answer the questionnaires to get a better result\n`);
@@ -213,6 +217,7 @@ async function copyFiles(
       }
     }
   } catch (err) {
+    console.error(err);
     console.log(`${chalk.red.bold("ERROR")} An error occurred while copying the files`);
     return process.exit(1);
   }
