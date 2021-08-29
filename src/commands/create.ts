@@ -1,6 +1,6 @@
 import { prompt } from "inquirer";
 import { mkdir, access, readdir, stat, writeFile, readFile } from "fs/promises";
-import { constants, existsSync } from "fs";
+import { constants, exists, existsSync } from "fs";
 import { join, resolve } from "path";
 import { ICreateOptions } from "../typescript/interfaces/interfaces";
 import * as Listr from "listr";
@@ -102,10 +102,7 @@ export async function missingCreateOptions(
 
   return {
     ...options,
-    dirName:
-      options.dirName || answers.dirName
-        ? answers.dirName.replaceAll(" ", "_")
-        : "Bot project",
+    dirName: options.dirName || answers.dirName.replaceAll(" ", "_"),
     template: answers.template.toLowerCase(),
     packageManager: answers.packageManager
       ? answers.packageManager.toLowerCase()
@@ -120,8 +117,14 @@ export async function missingCreateOptions(
 }
 
 async function renameDirName(options: ICreateOptions): Promise<ICreateOptions> {
+  if (options.dirName)
+    options.dirName = options.dirName.replaceAll(
+      /<|>|:|"|\/|\\|\||\?|\*|(^(aux|con|clock|nul|prn|com[1-9]|lpt[1-9])$)/g,
+      ""
+    );
   const pathProject = join(process.cwd(), options.dirName!);
-  if (existsSync(pathProject)) {
+
+  if (existsSync(pathProject) || !options.dirName) {
     const reg = new RegExp(/\_[0-9]{1,2}/);
     const match = options.dirName!.match(reg);
     if (match && match.index === options.dirName!.length - match[0].length) {
