@@ -119,7 +119,7 @@ export async function missingCreateOptions(
 async function renameDirName(options: ICreateOptions): Promise<ICreateOptions> {
   if (options.dirName)
     options.dirName = options.dirName.replaceAll(
-      /<|>|:|"|\/|\\|\||\?|\*|(^(aux|con|clock|nul|prn|com[1-9]|lpt[1-9])$)/g,
+      /<|>|:|"|\/|\\|\||\?|\*|(^(aux|con|clock|nul|prn|com[1-9]|lpt[1-9])$)/gi,
       ""
     );
   const pathProject = join(process.cwd(), options.dirName!);
@@ -220,7 +220,18 @@ async function copyFiles(
 
 async function addInfosPackageJson(options: ICreateOptions): Promise<void> {
   const filePath = join(options.targetDirectory!, "package.json");
-  let file = await import(filePath);
+  let file = {
+    name: options.dirName,
+    version: "1.0.0",
+    description: "",
+    main: "index.js",
+    scripts: {},
+    dependencies: {},
+    devDependencies: {},
+    keywords: [],
+    author: "",
+    license: "ISC",
+  };
   const scriptsJs = options.optionnalLibrary?.includes("nodemon")
     ? {
         start: "node ./src/index.js",
@@ -265,7 +276,7 @@ async function addInfosPackageJson(options: ICreateOptions): Promise<void> {
   file.dependencies = dependencies;
   file.devDependencies =
     options.template === "javascript" ? devDependenciesJs : devDependenciesTs;
-  await writeFile(filePath, JSON.stringify(file, null, 4));
+  await writeFile(filePath, JSON.stringify(file, null, 2));
 }
 
 export async function createProject(options: ICreateOptions): Promise<any> {
@@ -321,9 +332,9 @@ export async function createProject(options: ICreateOptions): Promise<any> {
       title: " 📑 Creating package.json file",
       task: async (ctx, task) => {
         try {
-          await execa("npm", ["init", "-y"], {
-            cwd: options.targetDirectory,
-          });
+          // await execa("npm", ["init", "-y"], {
+          //   cwd: options.targetDirectory,
+          // });
           await addInfosPackageJson(options);
         } catch (err) {
           task.skip("An error has occurred");
