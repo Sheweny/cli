@@ -35,7 +35,7 @@ async function getArgs(rawArgs: string[]): Promise<ICreateOptions | IAddOptions>
   ) {
     console.log(`${chalk.red.bold("ERROR")} Invalid command
 
-Run "${chalk.yellow} --help" for more informations`);
+Run "${chalk.yellow("sheweny")} --help" for more informations`);
     return process.exit(1);
   }
 
@@ -57,7 +57,7 @@ Run "${chalk.yellow} --help" for more informations`);
     ) {
       console.log(`${chalk.red.bold("ERROR")} Invalid command
 
-Run "${chalk.yellow} --help add" for more informations`);
+Run "${chalk.yellow("sheweny")} --help add" for more informations`);
       return process.exit(1);
     }
   }
