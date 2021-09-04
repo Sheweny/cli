@@ -26,7 +26,7 @@
   "bugs": {
     "url": "https://github.com/Sheweny/cli/issues"
   },
-  "homepage": "https://github.com/Sheweny/cli#readme",
+  "homepage": "https://sheweny.js.org/guide/cli/Installation.html",
   "dependencies": {
     "arg": "^5.0.1",
     "chalk": "^4.1.2",

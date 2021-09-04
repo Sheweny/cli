@@ -31,7 +31,11 @@ export interface IAddOptions {
 }
 
 interface commandOptions {
-  applicationCommandType?: "CHAT_INPUT" | "USER" | "MESSAGE";
+  applicationCommandType?:
+    | "SLASH_COMMAND"
+    | "CONTEXT_MENU_USER"
+    | "CONTEXT_MENU_MESSAGE"
+    | "MESSAGE_COMMAND";
   description?: string;
   category?: string;
   only?: "DM" | "GUILD";
