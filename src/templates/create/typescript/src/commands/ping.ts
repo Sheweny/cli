@@ -3,11 +3,11 @@ import { ICreateOptions } from "../../../../../typescript/interfaces/interfaces"
 export = (options: ICreateOptions) => {
   function importP(): string {
     if (options.commandType === "ApplicationCommand")
-      return `import { ApplicationCommand } from "sheweny";
+      return `import { Command } from "sheweny";
 import type { ShewenyClient } from "sheweny";
 import type { CommandInteraction } from "discord.js"`;
     else
-      return `import { MessageCommand } from "sheweny";
+      return `import { Command } from "sheweny";
 import type { ShewenyClient } from "sheweny";
 import type { Message } from "discord.js"`;
   }
@@ -19,15 +19,15 @@ import type { Message } from "discord.js"`;
       {
         name: "ping",
         description: "Ping Pong",
-        type: "CHAT_INPUT",
-      },
-      {
+        type: "SLASH_COMMAND",
         category: "Misc"
       }
     );`;
     else
-      return `super(client, "ping", {
+      return `super(client, {
+      name : "ping",
       description: "Ping Pong",
+      type: "MESSAGE_COMMAND",
       category: "Misc",
     });`;
   }
@@ -46,7 +46,7 @@ import type { Message } from "discord.js"`;
   return [
     `${importP()}
 
-export class PingCommand extends ${options.commandType} {
+export class PingCommand extends Command {
   constructor(client: ShewenyClient) {
     ${superCommand()}
   }

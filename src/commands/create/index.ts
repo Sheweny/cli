@@ -1,15 +1,15 @@
 import { prompt } from "inquirer";
-import { mkdir, access, readdir, stat, writeFile } from "fs/promises";
-import { constants, existsSync } from "fs";
-import { join, resolve } from "path";
-import { ICreateOptions } from "../typescript/interfaces/interfaces";
+import { ICreateOptions } from "../../typescript/interfaces/interfaces";
 import * as Listr from "listr";
 import * as execa from "execa";
 import * as chalk from "chalk";
-
-export async function missingCreateOptions(
-  options: ICreateOptions
-): Promise<ICreateOptions> {
+import {
+  createDirProject,
+  addInfosPackageJson,
+  getTemplateDirectory,
+  copyFiles,
+} from "./util";
+export async function getCreateOptions(options: ICreateOptions): Promise<ICreateOptions> {
   if (options.skipPrompts)
     return {
       ...options,
@@ -118,170 +118,6 @@ export async function missingCreateOptions(
     configFileType: answers.configFileType.toLowerCase(),
     optionnalLibrary: answers.optionnalLibrary,
   };
-}
-
-async function renameDirName(options: ICreateOptions): Promise<ICreateOptions> {
-  if (options.dirName)
-    options.dirName = options.dirName.replaceAll(
-      /<|>|:|"|\/|\\|\||\?|\*|(^(aux|con|clock|nul|prn|com[1-9]|lpt[1-9])$)/gi,
-      ""
-    );
-  const pathProject = join(process.cwd(), options.dirName!);
-
-  if (existsSync(pathProject) || !options.dirName) {
-    const reg = new RegExp(/\_[0-9]{1,2}/);
-    const match = options.dirName!.match(reg);
-    if (match && match.index === options.dirName!.length - match[0].length) {
-      const number =
-        parseInt(options.dirName!.substring(match.index + 1, options.dirName!.length)) +
-        1;
-      options = {
-        ...options,
-        dirName: options.dirName!.replace(reg, `_${number}`),
-      };
-      return renameDirName(options);
-    } else {
-      options.dirName += "_1";
-      return renameDirName(options);
-    }
-  } else return options;
-}
-
-async function createDirProject(options: ICreateOptions): Promise<ICreateOptions> {
-  try {
-    options = await renameDirName(options);
-    const pathDir = join(process.cwd(), options.dirName!);
-
-    await mkdir(pathDir);
-    options = {
-      ...options,
-      targetDirectory: pathDir,
-    };
-    return options;
-  } catch (err) {
-    console.log(`${chalk.red.bold("ERROR")} An error occurred while creating the folder`);
-    return process.exit(1);
-  }
-}
-
-async function getTemplateDirectory(options: ICreateOptions): Promise<ICreateOptions> {
-  try {
-    const templateDir = resolve(
-      require.main!.path,
-      "../lib/templates/create",
-      options.template!
-    );
-    await access(templateDir, constants.R_OK);
-    options = {
-      ...options,
-      templateDirectory: templateDir,
-    };
-    return options;
-  } catch (err) {
-    console.log(
-      `${chalk.red.bold("ERROR")} An error occurred while retrieving the template`
-    );
-    return process.exit(1);
-  }
-}
-
-function checkFile(options: ICreateOptions, file: string) {
-  const dirHandlers = ["events", "commands", "buttons", "selectmenus", "inhibitors"];
-  if (
-    file === "interactions" &&
-    !options.handlers?.includes("buttons") &&
-    !options.handlers?.includes("selectmenus")
-  )
-    return true;
-  else if (dirHandlers.includes(file) && !options.handlers?.includes(file)) return true;
-  return false;
-}
-
-async function copyFiles(
-  options: ICreateOptions,
-  template: string = options.templateDirectory!,
-  target: string = options.targetDirectory!
-): Promise<void> {
-  try {
-    const templateFiles = await readdir(template);
-    for (const file of templateFiles) {
-      const fileStat = await stat(join(template, file));
-      if (fileStat.isDirectory()) {
-        if (checkFile(options, file)) continue;
-        await mkdir(join(target, file));
-        await copyFiles(options, join(template, file), join(target, file));
-      } else {
-        if (checkFile(options, file)) continue;
-        const fileRead = await import(join(template, file));
-        await writeFile(join(target, fileRead(options)[1]), fileRead(options)[0]);
-      }
-    }
-  } catch (err) {
-    console.error(err);
-    console.log(`${chalk.red.bold("ERROR")} An error occurred while copying the files`);
-    return process.exit(1);
-  }
-}
-
-async function addInfosPackageJson(options: ICreateOptions): Promise<void> {
-  const filePath = join(options.targetDirectory!, "package.json");
-  let file = {
-    name: options.dirName,
-    version: "1.0.0",
-    description: "",
-    main: "index.js",
-    scripts: {},
-    dependencies: {},
-    devDependencies: {},
-    keywords: [],
-    author: "",
-    license: "ISC",
-  };
-  const scriptsJs = options.optionnalLibrary?.includes("nodemon")
-    ? {
-        start: "node ./src/index.js",
-        dev: "nodemon ./src/index.js",
-      }
-    : {
-        start: "node ./src/index.js",
-      };
-  const scriptsTs = options.optionnalLibrary?.includes("ts-node-dev")
-    ? {
-        start: "node ./dist/index.js",
-        dev: "tsnd --respawn --transpile-only --cls ./src/index.ts",
-        build: "tsc",
-      }
-    : {
-        start: "node ./dist/index.js",
-        build: "tsc",
-      };
-  const dependencies = options.optionnalLibrary?.includes("@discordjs/voice")
-    ? {
-        "discord.js": "^13.1.0",
-        sheweny: "1.0.0-beta.3",
-        "@discordjs/voice": "*",
-      }
-    : {
-        "discord.js": "^13.1.0",
-        sheweny: "1.0.0-beta.3",
-      };
-  const devDependenciesJs = options.optionnalLibrary?.includes("nodemon")
-    ? {
-        nodemon: "*",
-      }
-    : {};
-  const devDependenciesTs = options.optionnalLibrary?.includes("ts-node-dev")
-    ? {
-        typescript: "*",
-        "ts-node-dev": "*",
-      }
-    : { typescript: "*" };
-  if (options.template === "typescript") file.main = "dist/index.js";
-  file.scripts = options.template === "javascript" ? scriptsJs : scriptsTs;
-  file.dependencies = dependencies;
-  file.devDependencies =
-    options.template === "javascript" ? devDependenciesJs : devDependenciesTs;
-  await writeFile(filePath, JSON.stringify(file, null, 2));
 }
 
 export async function createProject(options: ICreateOptions): Promise<any> {

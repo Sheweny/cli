@@ -1,7 +1,8 @@
 import * as arg from "arg";
 import * as chalk from "chalk";
-import { createProject, missingCreateOptions } from "./commands/create";
-import { missingAddOptions, addTemplate } from "./commands/add";
+import { createProject, getCreateOptions } from "./commands/create";
+import { createTemplate } from "./commands/add/util";
+import { getAddOptions } from "./commands/add/util/getOptions";
 import { ICreateOptions, IAddOptions } from "./typescript/interfaces/interfaces";
 import { readdir } from "fs/promises";
 import { executeHelp } from "./commands/help";
@@ -34,7 +35,6 @@ async function getArgs(rawArgs: string[]): Promise<ICreateOptions | IAddOptions>
     (executeType && executeType !== "create" && executeType !== "add")
   ) {
     console.log(`${chalk.red.bold("ERROR")} Invalid command
-
 Run "${chalk.yellow("sheweny")} --help" for more informations`);
     return process.exit(1);
   }
@@ -80,10 +80,10 @@ export async function cli(args: string[]): Promise<void> {
   if (options.help)
     return executeHelp(options.executeType!, (options as IAddOptions).addType!);
   if (options.executeType === "create") {
-    options = await missingCreateOptions(options);
+    options = await getCreateOptions(options);
     await createProject(options);
   } else if (options.executeType === "add") {
-    options = await missingAddOptions(options);
-    await addTemplate(options);
+    options = await getAddOptions(options);
+    await createTemplate(options);
   }
 }

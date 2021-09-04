@@ -11,13 +11,13 @@ export = (options: ICreateOptions) => {
     if (options.handlers!.includes("commands")) {
       if (options.commandType === "MessageCommand")
         result += `
-    messageCommands: {
+    commands: {
       directory: "./commands",
       prefix: "!",
     },`;
       if (options.commandType === "ApplicationCommand")
         result += `
-    applicationCommands: {
+    commands: {
       directory: "./commands",
     },`;
     }
@@ -54,6 +54,7 @@ const config = require("../config${options.configFileType === "json" ? ".json" :
 
 const client = new ShewenyClient({
   intents: ["GUILDS"${intents}],${handlers()}
+  mode : "development", // Change to production for production bot
 });
 
 client.login(config.DISCORD_TOKEN);

@@ -3,20 +3,18 @@ import { ICreateOptions } from "../../../../../typescript/interfaces/interfaces"
 export = (options: ICreateOptions) => {
   function superCommand(): string {
     if (options.commandType === "ApplicationCommand")
-      return `super(
-      client,
-      {
+      return `super(client, {
         name: "ping",
         description: "Ping Pong",
-        type: "CHAT_INPUT",
-      },
-      {
-        category: "Misc"
+        type: "SLASH_COMMAND",
+        category : "Misc",
       }
     );`;
     else
-      return `super(client, "ping", {
+      return `super(client, {
+      name : "ping",
       description: "Ping Pong",
+      type: "MESSAGE_COMMAND",
       category: "Misc",
     });`;
   }
@@ -33,9 +31,9 @@ export = (options: ICreateOptions) => {
   }
 
   return [
-    `const { ${options.commandType} } = require("sheweny");
+    `const { Command } = require("sheweny");
 
-module.exports = class PingCommand extends ${options.commandType} {
+module.exports = class PingCommand extends Command {
   constructor(client) {
     ${superCommand()}
   }
