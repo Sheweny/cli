@@ -1,8 +1,8 @@
 import * as arg from "arg";
 import * as chalk from "chalk";
 import { createProject, getCreateOptions } from "./commands/create";
-import { createTemplate } from "./commands/add/util";
-import { getAddOptions } from "./commands/add/util/getOptions";
+import { getAddOptions } from "./commands/add/util";
+import { addTemplate } from "./commands/add/add";
 import { ICreateOptions, IAddOptions } from "./typescript/interfaces/interfaces";
 import { readdir } from "fs/promises";
 import { executeHelp } from "./commands/help";
@@ -84,6 +84,6 @@ export async function cli(args: string[]): Promise<void> {
     await createProject(options);
   } else if (options.executeType === "add") {
     options = await getAddOptions(options);
-    await createTemplate(options);
+    await addTemplate(options);
   }
 }

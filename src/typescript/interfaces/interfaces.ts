@@ -50,11 +50,14 @@ interface eventOptions {
 export interface ICliConfig {
   template: "javascript" | "typescript";
   handlers: {
-    applicationCommands: string | undefined;
-    messageCommands: string | undefined;
+    commands: string | undefined;
     events: string | undefined;
     inhibitors: string | undefined;
     buttons: string | undefined;
     selectMenus: string | undefined;
+
+    // Old version support :
+    messageCommands: string | undefined;
+    applicationCommands: string | undefined;
   };
 }

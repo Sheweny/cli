@@ -1,18 +1,9 @@
 import { ICreateOptions } from "../../../typescript/interfaces/interfaces";
 
 export = (options: ICreateOptions) => {
-  const applicationCommands =
-    options.handlers!.includes("commands") && options.commandType === "ApplicationCommand"
-      ? `"src/commands"`
-      : null;
-  const messageCommands =
-    options.handlers!.includes("commands") && options.commandType === "MessageCommand"
-      ? `"src/commands"`
-      : null;
+  const commands = options.handlers!.includes("commands") ? `"src/commands"` : null;
   const events = options.handlers!.includes("events") ? `"src/events"` : null;
-  const inhibitors = options.handlers!.includes("inhibitors")
-    ? `"src/inhibitors"`
-    : null;
+  const inhibitors = options.handlers!.includes("inhibitors") ? `"src/inhibitors"` : null;
   const buttons = options.handlers!.includes("buttons")
     ? `"src/interactions/buttons"`
     : null;
@@ -24,8 +15,7 @@ export = (options: ICreateOptions) => {
     `{
   "template": "${options.template}",
   "handlers": {
-    "applicationCommands": ${applicationCommands},
-    "messageCommands": ${messageCommands},
+    "commannds": ${commands},
     "events": ${events},
     "inhibitors": ${inhibitors},
     "buttons": ${buttons},
