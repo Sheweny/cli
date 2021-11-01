@@ -10,11 +10,6 @@ export async function getTemplateDirectory(options: IAddOptions): Promise<IAddOp
       "../lib/templates/add",
       `${options.addType!}.js`
     );
-    console.log(`${options.addType!}.js`);
-
-    console.log(require.main!.path);
-
-    console.log(templateDir);
 
     await access(templateDir, constants.R_OK);
     options = {
