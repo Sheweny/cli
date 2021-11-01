@@ -58,7 +58,7 @@ ${options.config!.template === "javascript" ? "module.exports =" : "export"} cla
   }) {
     super(client, 
       {
-      name : "${options.addName}"
+      name : "${options.addName}",
       description: "${options.commandOptions!.description}",
       category: "${options.commandOptions!.category}",
       cooldown: ${options.commandOptions!.cooldown},
