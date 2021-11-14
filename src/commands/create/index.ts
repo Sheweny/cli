@@ -1,243 +1,234 @@
 import { prompt } from "inquirer";
-import { ICreateOptions } from "../../typescript/interfaces/interfaces";
+import { ICreateOptions, ICommand } from "../../typescript/interfaces/interfaces";
 import * as Listr from "listr";
 import * as execa from "execa";
 import * as chalk from "chalk";
-import {
-  createDirProject,
-  addInfosPackageJson,
-  getTemplateDirectory,
-  copyFiles,
-} from "./util";
-export async function getCreateOptions(options: ICreateOptions): Promise<ICreateOptions> {
-  if (options.skipPrompts)
-    return {
-      ...options,
-      dirName: options.dirName || "Project_Bot",
-      template: "javascript",
-      packageManager: "npm",
-      handlers: ["Commands", "Events"],
-      commandType: "ApplicationCommand",
-      configFileType: "json",
-    };
+import { createDirProject, addInfosPackageJson, getTemplateDirectory, copyFiles } from "./util";
 
-  console.log(`\n📜 Please answer the questionnaires to get a better result\n`);
+export class Project {
+  /**
+   * The options of the command
+   * @param {ICommand} opts
+   */
+  public options: ICommand;
+  /**
+   * Config of the project
+   * @param {ICreateOptions} config
+   */
+  public config: ICreateOptions = {};
 
-  const answers = await prompt([
-    {
-      type: "input",
-      name: "dirName",
-      message: "Please choose the name of the project:",
-      when: () => !options.dirName,
-    },
-    {
-      type: "list",
-      name: "template",
-      message: "Please choose a language template",
-      choices: ["Javascript", "Typescript"],
-      default: "Javascript",
-    },
-    {
-      type: "confirm",
-      name: "runInstall",
-      message: "Do you want install the packages ?",
-      default: true,
-    },
-    {
-      type: "list",
-      name: "packageManager",
-      message: "Which package manager do you want to install the packages with ?",
-      choices: ["Npm", "Yarn"],
-      default: "Npm",
-      when: (answer) => answer.runInstall,
-    },
-    {
-      type: "checkbox",
-      name: "optionnalLibrary",
-      message: "What optional libraries do you want to install ?",
-      choices: (answers) =>
-        ["@discordjs/voice"].concat(
-          answers.template === "Javascript" ? "nodemon" : "ts-node-dev"
-        ),
-    },
-    {
-      type: "confirm",
-      name: "git",
-      message: "Do you want initialize git ?",
-      default: false,
-    },
-    {
-      type: "confirm",
-      name: "putToken",
-      message: "Do you want to add the token of your bot ?",
-      default: true,
-    },
-    {
-      type: "password",
-      name: "token",
-      message: "Please write your bot token:",
-      when: (answers) => answers.putToken,
-    },
-    {
-      type: "checkbox",
-      name: "handlers",
-      message: "Which handlers do you want to add ?",
-      choices: ["Events", "Commands", "Buttons", "SelectMenus", "Inhibitors"],
-    },
-    {
-      type: "list",
-      name: "commandType",
-      message: "What kind of commands do you want ?",
-      choices: ["MessageCommand", "ApplicationCommand"],
-      default: "MessageCommand",
-      when: (answers) => answers.handlers.includes("Commands"),
-    },
-    {
-      type: "list",
-      name: "configFileType",
-      message: "What type of configuration file do you want ?",
-      choices: (answers) => [
-        "Json",
-        `${answers.template === "Javascript" ? "JS" : "TS"}`,
-      ],
-      default: "Json",
-    },
-  ]);
-
-  return {
-    ...options,
-    dirName: options.dirName || answers.dirName.replaceAll(" ", "_"),
-    template: answers.template.toLowerCase(),
-    packageManager: answers.packageManager
-      ? answers.packageManager.toLowerCase()
-      : undefined,
-    token: answers.token,
-    git: answers.git,
-    handlers: (answers.handlers as string[]).map((e) => e.toLowerCase()),
-    commandType: answers.commandType,
-    configFileType: answers.configFileType.toLowerCase(),
-    optionnalLibrary: answers.optionnalLibrary,
-  };
-}
-
-export async function createProject(options: ICreateOptions): Promise<any> {
-  const majorVersion = parseInt(process.version.split(".")[0]);
-  const minorVersion = parseInt(process.version.split(".")[1]);
-
-  if (majorVersion < 16) {
-    console.log(
-      `${chalk.red.bold(
-        "ERROR"
-      )} You must have nodejs 16.6.0 or higher for use discord.js V13 `
-    );
-    process.exit(1);
-  } else if (majorVersion == 16 && minorVersion < 6) {
-    console.log(
-      `${chalk.red.bold(
-        "ERROR"
-      )} You must have nodejs 16.6.0 or higher for use discord.js V13 `
-    );
-    process.exit(1);
+  /**
+   * @constructor
+   * @param {ICommand} opts
+   */
+  constructor(opts: ICommand) {
+    this.options = opts;
   }
 
-  const tasks = new Listr([
-    {
-      title: " 📁 Creating Project folder",
-      task: async () => {
-        options = await createDirProject(options);
+  /**
+   * Get the config parameters
+   * @param options
+   * @returns {Promise<ICreateOptions>} -The config parameters
+   */
+  async getConfig(): Promise<ICreateOptions> {
+    if (this.options.skipPrompts)
+      return {
+        dirName: this.options.arguments?.join(" ") || "Project_Bot",
+        template: "javascript",
+        packageManager: "npm",
+        handlers: ["COMMANDS", "EVENTS"],
+        configFileType: "json",
+        version: 3,
+      };
+
+    console.log(`\n📜 Please answer the questionnaires to get a better result\n`);
+
+    const answers = await prompt([
+      {
+        type: "input",
+        name: "dirName",
+        message: "Please choose the name of the project:",
       },
-    },
-    {
-      title: ` 🧮 Getting ${options.template!} template`,
-      task: async () => {
-        options = await getTemplateDirectory(options);
+      {
+        type: "list",
+        name: "version",
+        message: "Please choose a version of Sheweny",
+        choices: ["Version 2", "Version 3"],
+        default: "Version 3",
       },
-    },
-    {
-      title: " ⚙️ Git init",
-      enabled: () => options.git === true,
-      task: async (ctx, task) => {
-        const gitError = (await execa("git", ["--version"])).failed;
-
-        if (gitError) {
-          task.title = `${task.title} (or not)`;
-          return task.skip("Git not available");
-        }
-
-        execa("git", ["init", options.dirName!]).then((res) => {
-          if (res.failed) return task.skip("An error has occurred");
-        });
+      {
+        type: "list",
+        name: "template",
+        message: "Please choose a language template",
+        choices: ["Javascript", "Typescript"],
+        default: "Javascript",
       },
-    },
-    {
-      title: " 📑 Creating package.json file",
-      task: async (ctx, task) => {
-        try {
-          await addInfosPackageJson(options);
-        } catch (err) {
-          task.skip("An error has occurred");
-        }
+
+      {
+        type: "confirm",
+        name: "runInstall",
+        message: "Do you want install the packages ?",
+        default: true,
       },
-    },
-    {
-      title: ` 🗃️ Install packages with yarn`,
-      enabled: () => options.packageManager === "yarn",
-      task: async (ctx, task) => {
-        const yarnError = (await execa("yarn", ["--version"])).failed;
+      {
+        type: "list",
+        name: "packageManager",
+        message: "Which package manager do you want to install the packages with ?",
+        choices: ["Npm", "Yarn"],
+        default: "Npm",
+        when: (answer) => answer.runInstall,
+      },
+      {
+        type: "checkbox",
+        name: "optionnalLibrary",
+        message: "What optional libraries do you want to install ?",
+        choices: (answers) => ["@discordjs/voice"].concat(answers.template === "Javascript" ? "nodemon" : "ts-node-dev"),
+      },
+      {
+        type: "confirm",
+        name: "git",
+        message: "Do you want initialize git ?",
+        default: false,
+      },
+      {
+        type: "confirm",
+        name: "putToken",
+        message: "Do you want to add the token of your bot ?",
+        default: true,
+      },
+      {
+        type: "password",
+        name: "token",
+        message: "Please write your bot token:",
+        when: (answers) => answers.putToken,
+      },
+      {
+        type: "checkbox",
+        name: "handlers",
+        message: "Which handlers do you want to add ?",
+        choices: ["Events", "Commands", "Buttons", "SelectMenus", "Inhibitors"],
+      },
 
-        if (options.packageManager === "yarn" && yarnError) {
-          ctx.yarn = false;
+      {
+        type: "list",
+        name: "configFileType",
+        message: "What type of configuration file do you want ?",
+        choices: (answers) => ["Json", `${answers.template === "Javascript" ? "JS" : "TS"}`],
+        default: "Json",
+      },
+    ]);
+    return {
+      dirName: this.options.arguments?.join(" ") || answers.dirName.replaceAll(" ", "_"),
+      template: answers.template.toLowerCase(),
+      packageManager: answers.packageManager ? answers.packageManager.toLowerCase() : undefined,
+      token: answers.token,
+      git: answers.git,
+      handlers: (answers.handlers as string[]).map((e) => e.toLowerCase()),
+      configFileType: answers.configFileType.toLowerCase(),
+      optionnalLibrary: answers.optionnalLibrary,
+      version: answers.version == "Version 2" ? 2 : 3,
+    };
+  }
+  async create(config: ICreateOptions): Promise<void> {
+    if (!config) throw new Error("Config is not defined");
 
-          task.title = `${task.title} (or not)`;
-          return task.skip("Yarn not available");
-        }
+    const tasks = new Listr([
+      {
+        title: " 📁 Creating Project folder",
+        task: async () => {
+          config = await createDirProject(config);
+        },
+      },
+      {
+        title: ` 🧮 Getting ${config.template!} template`,
+        task: async () => {
+          config = await getTemplateDirectory(config);
+        },
+      },
+      {
+        title: " ⚙️ Git init",
+        enabled: () => config.git === true,
+        task: async (ctx, task) => {
+          const gitError = (await execa("git", ["--version"])).failed;
 
-        try {
-          await execa("yarn", {
-            cwd: options.targetDirectory,
+          if (gitError) {
+            task.title = `${task.title} (or not)`;
+            return task.skip("Git not available");
+          }
+
+          execa("git", ["init", config.dirName!]).then((res) => {
+            if (res.failed) return task.skip("An error has occurred");
           });
-        } catch (err) {
-          task.skip("An error has occurred");
-        }
+        },
       },
-    },
-    {
-      title: " 🗃️ Install packages with npm",
-      enabled: (ctx) => options.packageManager === "npm" || ctx.yarn === false,
-      task: async (ctx, task) => {
-        try {
-          await execa("npm", ["install"], {
-            cwd: options.targetDirectory,
-          });
-        } catch (err) {
-          task.skip("An error has occurred");
-        }
+      {
+        title: " 📑 Creating package.json file",
+        task: async (ctx, task) => {
+          try {
+            await addInfosPackageJson(config);
+          } catch (err) {
+            task.skip("An error has occurred");
+          }
+        },
       },
-    },
-    {
-      title: ` 🖨️ Copying files`,
-      task: async () => {
-        await copyFiles(options);
-      },
-    },
-  ]);
+      {
+        title: ` 🗃️ Install packages with yarn`,
+        enabled: () => config.packageManager === "yarn",
+        task: async (ctx, task) => {
+          const yarnError = (await execa("yarn", ["--version"])).failed;
 
-  tasks
-    .run()
-    .then(() => {
-      console.log(
-        `\n🎉 Successfully created project ${chalk.yellow(
-          options.dirName!
-        )} !\n👉 Get started with the following commands:\n\n ${chalk.grey(
-          "$"
-        )} ${chalk.blue(`cd ${options.dirName!}`)}\n${
-          options.packageManager
-            ? ` ${chalk.grey("$")} ${chalk.blue(`${options.packageManager!} start`)}\n`
-            : ` ${chalk.grey("$")} ${chalk.blue(`npm install`)}\n`
-        }`
-      );
-    })
-    .catch(() => {
-      console.log(`${chalk.red.bold("ERROR")} An error has occurred`);
-    });
+          if (config.packageManager === "yarn" && yarnError) {
+            ctx.yarn = false;
+
+            task.title = `${task.title} (or not)`;
+            return task.skip("Yarn not available");
+          }
+
+          try {
+            await execa("yarn", {
+              cwd: config.targetDirectory,
+            });
+          } catch (err) {
+            task.skip("An error has occurred");
+          }
+        },
+      },
+      {
+        title: " 🗃️ Install packages with npm",
+        enabled: (ctx) => config.packageManager === "npm" || ctx.yarn === false,
+        task: async (ctx, task) => {
+          try {
+            await execa("npm", ["install"], {
+              cwd: config.targetDirectory,
+            });
+          } catch (err) {
+            task.skip("An error has occurred");
+          }
+        },
+      },
+      {
+        title: ` 🖨️ Copying files`,
+        task: async () => {
+          await copyFiles(config);
+        },
+      },
+    ]);
+
+    tasks
+      .run()
+      .then(() => {
+        console.log(
+          `\n🎉 Successfully created project ${chalk.yellow(config.dirName!)} !\n👉 Get started with the following commands:\n\n ${chalk.grey(
+            "$"
+          )} ${chalk.blue(`cd ${config.dirName!}`)}\n${
+            config.packageManager
+              ? ` ${chalk.grey("$")} ${chalk.blue(`${config.packageManager!} start`)}\n`
+              : ` ${chalk.grey("$")} ${chalk.blue(`npm install`)}\n`
+          }`
+        );
+      })
+      .catch(() => {
+        console.log(`${chalk.red.bold("ERROR")} An error has occurred`);
+      });
+  }
 }

@@ -1,6 +1,10 @@
+export interface ICommand {
+  commandName?: "create" | "add" | "help";
+  arguments: string[];
+  skipPrompts: boolean;
+}
 export interface ICreateOptions {
-  executeType?: "create";
-  help: boolean;
+  commandName?: "create";
   dirName?: string;
   targetDirectory?: string;
   templateDirectory?: string;
@@ -9,14 +13,14 @@ export interface ICreateOptions {
   packageManager?: "npm" | "yarn";
   token?: string;
   git?: boolean;
-  commandType?: "MessageCommand" | "ApplicationCommand";
   handlers?: string[];
   configFileType?: "json" | "js" | "ts";
   optionnalLibrary?: string[];
+  version?: number;
 }
 
 export interface IAddOptions {
-  executeType?: "add";
+  commandName?: "add";
   help: boolean;
   skipPrompts?: boolean;
   addType?: "command" | "event" | "button" | "selectmenu" | "inhibitor";
@@ -31,11 +35,7 @@ export interface IAddOptions {
 }
 
 interface commandOptions {
-  applicationCommandType?:
-    | "SLASH_COMMAND"
-    | "CONTEXT_MENU_USER"
-    | "CONTEXT_MENU_MESSAGE"
-    | "MESSAGE_COMMAND";
+  applicationCommandType?: "SLASH_COMMAND" | "CONTEXT_MENU_USER" | "CONTEXT_MENU_MESSAGE" | "MESSAGE_COMMAND";
   description?: string;
   category?: string;
   only?: "DM" | "GUILD";

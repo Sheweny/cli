@@ -1,89 +1,34 @@
-import * as arg from "arg";
-import * as chalk from "chalk";
-import { createProject, getCreateOptions } from "./commands/create";
-import { getAddOptions } from "./commands/add/util";
-import { addTemplate } from "./commands/add/add";
-import { ICreateOptions, IAddOptions } from "./typescript/interfaces/interfaces";
-import { readdir } from "fs/promises";
-import { executeHelp } from "./commands/help";
-
-async function getArgs(rawArgs: string[]): Promise<ICreateOptions | IAddOptions> {
-  const args = arg(
-    {
-      "--yes": Boolean,
-      "--help": Boolean,
-      "-y": "--yes",
-      "-h": "--help",
-    },
-    {
-      argv: rawArgs.slice(2),
-    }
-  );
-
-  if (args["--help"])
-    return {
-      help: args["--help"],
-      executeType: args._[0] as "create" | "add",
-      addType: args._[1] as "command" | "event" | "button" | "selectmenu" | "inhibitor",
-    };
-
-  const executeType: "create" | "add" | undefined = args._[0]
-    ? (args._[0].toLowerCase() as "create" | "add")
-    : undefined;
-  if (
-    !executeType ||
-    (executeType && executeType !== "create" && executeType !== "add")
-  ) {
-    console.log(`${chalk.red.bold("ERROR")} Invalid command
-Run "${chalk.yellow("sheweny")} --help" for more informations`);
-    return process.exit(1);
-  }
-
-  let secondaryArg: string | undefined = args._[1];
-  if (executeType === "add") {
-    if (!(await readdir(process.cwd())).includes("cli-config.json")) {
-      console.log(`${chalk.red.bold("ERROR")} cli-config not found`);
-      return process.exit(1);
-    }
-    secondaryArg = secondaryArg ? secondaryArg.toLowerCase() : undefined;
-    if (
-      !secondaryArg ||
-      (secondaryArg &&
-        secondaryArg !== "command" &&
-        secondaryArg !== "event" &&
-        secondaryArg !== "button" &&
-        secondaryArg !== "selectmenu" &&
-        secondaryArg !== "inhibitor")
-    ) {
-      console.log(`${chalk.red.bold("ERROR")} Invalid command
-
-Run "${chalk.yellow("sheweny")} --help add" for more informations`);
-      return process.exit(1);
-    }
-  }
-
-  return {
-    executeType,
-    help: args["--help"] || false,
-    skipPrompts: args["--yes"] || false,
-    dirName:
-      executeType === "create" ? args._.filter((v, i) => i !== 0).join("_") : undefined,
-    addType:
-      executeType === "add"
-        ? (secondaryArg as "command" | "event" | "button" | "selectmenu" | "inhibitor")
-        : undefined,
-  };
-}
-
+import { Project } from "./commands/create";
+import { help } from "./commands/help/index";
+import { getArgs } from "./utils/getArgs";
+import { magenta, red } from "chalk";
 export async function cli(args: string[]): Promise<void> {
-  let options = await getArgs(args);
-  if (options.help)
-    return executeHelp(options.executeType!, (options as IAddOptions).addType!);
-  if (options.executeType === "create") {
-    options = await getCreateOptions(options);
-    await createProject(options);
-  } else if (options.executeType === "add") {
-    options = await getAddOptions(options);
-    await addTemplate(options);
+  const majorVersion = parseInt(process.version.split(".")[0]);
+  const minorVersion = parseInt(process.version.split(".")[1]);
+
+  if (majorVersion < 16) {
+    console.log(`${red.bold("ERROR")} You must have nodejs 16.6.0 or higher for use discord.js V13 `);
+    process.exit(1);
+  } else if (majorVersion == 16 && minorVersion < 6) {
+    console.log(`${red.bold("ERROR")} You must have nodejs 16.6.0 or higher for use discord.js V13 `);
+    process.exit(1);
+  }
+  const options = await getArgs(args);
+  switch (options.commandName) {
+    case "help":
+      await help(options);
+      break;
+    case "create":
+      const project = new Project(options);
+      const config = await project.getConfig();
+      await project.create(config);
+      break;
+    // case "add":
+    //   const addOptions = await getAddOptions(options);
+    //   await addTemplate(addOptions);
+    //   break;
+    default:
+      console.log(`${red.bold("ERROR")} Invalid command\nRun "${magenta("sheweny")} --help" for more informations`);
+      process.exit(1);
   }
 }
