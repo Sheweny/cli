@@ -11,7 +11,7 @@ export function defaultHelp() {
                                             |___/ 
 `
   )}
-${chalk.green("Welcome to the command line interface of Sheweny framework.")}
+${chalk.green("Welcome to the command line interface of Sheweny framework !")}
 
 ${chalk.yellow("Prefixes:")}
 - ${chalk.magenta("sheweny")}
@@ -23,6 +23,9 @@ ${chalk.yellow("Usage:")}
 ${chalk.yellow("Commands:")}
 - ${chalk.magenta("sheweny")} create [project_name]
 - ${chalk.magenta("sheweny")} add <add_type>
+- ${chalk.magenta("sheweny")} help [argument]
+- ${chalk.magenta("sheweny")} version | --version | -v
+
 
 `);
 }

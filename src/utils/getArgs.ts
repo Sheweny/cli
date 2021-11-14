@@ -8,8 +8,10 @@ export async function getArgs(rawArgs: string[]): Promise<ICommand> {
     {
       "--yes": Boolean,
       "--help": Boolean,
+      "--version": Boolean,
       "-y": "--yes",
       "-h": "--help",
+      "-v": "--version",
     },
     {
       argv: rawArgs.slice(1),
@@ -22,32 +24,16 @@ export async function getArgs(rawArgs: string[]): Promise<ICommand> {
       arguments: args._.slice(1),
       skipPrompts: false,
     };
+  if (args["--version"])
+    return {
+      commandName: "version",
+      arguments: args._.slice(1),
+      skipPrompts: false,
+    };
 
-  const commandName: "create" | "add" | "help" | undefined = args._[1]
-    ? (args._[1].toLowerCase() as "create" | "add" | "help")
+  const commandName: "create" | "add" | "help" | "version" | undefined = args._[1]
+    ? (args._[1].toLowerCase() as "create" | "add" | "help" | "version")
     : undefined;
-
-  let secondaryArg: string | undefined = args._[1];
-  if (commandName === "add") {
-    if (!(await readdir(process.cwd())).includes("cli-config.json")) {
-      console.log(`${chalk.red.bold("ERROR")} cli-config not found`);
-      return process.exit(1);
-    }
-    secondaryArg = secondaryArg ? secondaryArg.toLowerCase() : undefined;
-    if (
-      !secondaryArg ||
-      (secondaryArg &&
-        secondaryArg !== "command" &&
-        secondaryArg !== "event" &&
-        secondaryArg !== "button" &&
-        secondaryArg !== "selectmenu" &&
-        secondaryArg !== "inhibitor")
-    ) {
-      console.log(`${chalk.red.bold("ERROR")} Invalid command
-Run "${chalk.yellow("sheweny")} --help add" for more informations`);
-      return process.exit(1);
-    }
-  }
 
   return {
     commandName,

@@ -3,6 +3,7 @@ import type { ICommand, IAddOptions, AddType } from "../../typescript/interfaces
 import { renameCommandType } from "./util";
 import * as Listr from "listr";
 import * as chalk from "chalk";
+import { readdir } from "fs/promises";
 import { createTemplate, resolveHandlersDir, checkPath, getTemplateDirectory, getCliConfig } from "./util";
 export class Component {
   /**
@@ -23,7 +24,26 @@ export class Component {
   constructor(opts: ICommand) {
     this.options = opts;
   }
-
+  async init() {
+    let secondaryArg: string | undefined = this.options.arguments[0]?.toLowerCase();
+    if (!(await readdir(process.cwd())).includes("cli-config.json")) {
+      console.log(`${chalk.red.bold("ERROR")} cli-config not found`);
+      return process.exit(1);
+    }
+    if (
+      !secondaryArg ||
+      (secondaryArg &&
+        secondaryArg !== "command" &&
+        secondaryArg !== "event" &&
+        secondaryArg !== "button" &&
+        secondaryArg !== "selectmenu" &&
+        secondaryArg !== "inhibitor")
+    ) {
+      console.log(`${chalk.red.bold("ERROR")} Invalid command
+Run "${chalk.magenta("sheweny")} --help add" for more informations`);
+      return process.exit(1);
+    }
+  }
   /**
    * Get the config parameters
    * @param options

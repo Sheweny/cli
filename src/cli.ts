@@ -1,8 +1,9 @@
 import { Project } from "./commands/create";
 import { Component } from "./commands/add";
+import { getVersion } from "./commands/version";
 import { help } from "./commands/help/index";
 import { getArgs } from "./utils/getArgs";
-import { magenta, red } from "chalk";
+import { red } from "chalk";
 export async function cli(args: string[]): Promise<void> {
   const majorVersion = parseInt(process.version.split(".")[0]);
   const minorVersion = parseInt(process.version.split(".")[1]);
@@ -15,8 +16,6 @@ export async function cli(args: string[]): Promise<void> {
     process.exit(1);
   }
   const options = await getArgs(args);
-  console.log(options);
-
   switch (options.commandName) {
     case "help":
       await help(options);
@@ -28,11 +27,15 @@ export async function cli(args: string[]): Promise<void> {
       break;
     case "add":
       const component = new Component(options);
+      await component.init();
       const configComponent = await component.getConfig();
       await component.create(configComponent);
       break;
+    case "version":
+      console.log("Sheweny CLI :", getVersion());
+      break;
     default:
-      console.log(`${red.bold("ERROR")} Invalid command\nRun "${magenta("sheweny")} --help" for more informations`);
-      process.exit(1);
+      help(options);
+      break;
   }
 }

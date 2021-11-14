@@ -1,5 +1,5 @@
 export interface ICommand {
-  commandName?: "create" | "add" | "help";
+  commandName?: "create" | "add" | "help" | "version";
   arguments: string[];
   skipPrompts: boolean;
 }
