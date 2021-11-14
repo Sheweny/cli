@@ -16,49 +16,45 @@ export async function addInfosPackageJson(options: ICreateOptions): Promise<void
     author: "",
     license: "ISC",
   };
-  const scriptsJs = options.optionnalLibrary?.includes("nodemon")
-    ? {
-        start: "node ./src/index.js",
-        dev: "nodemon ./src/index.js",
-      }
-    : {
-        start: "node ./src/index.js",
-      };
-  const scriptsTs = options.optionnalLibrary?.includes("ts-node-dev")
-    ? {
-        start: "node ./dist/index.js",
-        dev: "tsnd --respawn --transpile-only --cls ./src/index.ts",
-        build: "tsc",
-      }
-    : {
-        start: "node ./dist/index.js",
-        build: "tsc",
-      };
-  const dependencies = options.optionnalLibrary?.includes("@discordjs/voice")
-    ? {
-        "discord.js": "^13.1.0",
-        sheweny: "^2.0.0",
-        "@discordjs/voice": "*",
-      }
-    : {
-        "discord.js": "^13.1.0",
-        sheweny: "^2.0.0",
-      };
-  const devDependenciesJs = options.optionnalLibrary?.includes("nodemon")
-    ? {
-        nodemon: "*",
-      }
-    : {};
-  const devDependenciesTs = options.optionnalLibrary?.includes("ts-node-dev")
-    ? {
-        typescript: "*",
-        "ts-node-dev": "*",
-      }
-    : { typescript: "*" };
+
+  /**
+   * @description : add scripts in package.json
+   */
+  const scriptsJs: any = {
+    start: "node ./src/index.js",
+  };
+
+  if (options.optionnalLibrary?.includes("nodemon")) scriptsJs["dev"] = "nodemon ./src/index.js";
+
+  const scriptsTs: any = {
+    start: "node ./dist/index.js",
+    build: "tsc",
+  };
+  if (options.optionnalLibrary?.includes("ts-node-dev")) scriptsTs["dev"] = "tsnd --respawn --transpile-only --cls ./src/index.ts";
+
+  /**
+   * @description: Add dependencies to package.json
+   */
+  const dependencies: any = {
+    "discord.js": "^13.0.0",
+  };
+  if (options.optionnalLibrary?.includes("@discordjs/voice")) dependencies["@discordjs/voice"] = "*";
+  if (options.version === 2) dependencies["sheweny"] = "^2.0.0";
+  if (options.version === 3) dependencies["sheweny"] = "^3.0.0";
+
+  /**
+   * @description: Add devDependencies to package.json
+   */
+  const devDependenciesJs: any = {};
+  if (options.optionnalLibrary?.includes("nodemon")) devDependenciesJs["nodemon"] = "^2.0.0";
+
+  const devDependenciesTs: any = {};
+  if (options.optionnalLibrary?.includes("ts-node-dev")) devDependenciesTs["ts-node-dev"] = "^1.0.0";
+
   if (options.template === "typescript") file.main = "dist/index.js";
+  else file.main = "src/index.js";
   file.scripts = options.template === "javascript" ? scriptsJs : scriptsTs;
   file.dependencies = dependencies;
-  file.devDependencies =
-    options.template === "javascript" ? devDependenciesJs : devDependenciesTs;
+  file.devDependencies = options.template === "javascript" ? devDependenciesJs : devDependenciesTs;
   await writeFile(filePath, JSON.stringify(file, null, 2));
 }
