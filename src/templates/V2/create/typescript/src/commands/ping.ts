@@ -1,39 +1,25 @@
 import { ICreateOptions } from "../../../../../../typescript/interfaces/interfaces";
 
 export = (options: ICreateOptions) => {
-  function importP(): string {
-    return `import { Command } from "sheweny";
-import type { ShewenyClient } from "sheweny";
-import type { Message } from "discord.js"`;
-  }
-
-  function superCommand(): string {
-    return `super(client,
-      {
-        name: "ping",
-        description: "Ping Pong",
-        type: "SLASH_COMMAND",
-        category: "Misc"
-      }
-    );`;
-  }
-
-  function execute(): string {
-    return `async execute(interaction: CommandInteraction) {
-    await interaction.reply({ content: "Pong" });
-  }`;
-  }
-
   return [
-    `${importP()}
+    `import { Command } from "sheweny";
+import type { ShewenyClient } from "sheweny";
+import type { CommandInteraction } from "discord.js";
 
 export class PingCommand extends Command {
   constructor(client: ShewenyClient) {
-    ${superCommand()}
+    super(client, {
+      name: "ping",
+      description: "Ping Pong",
+      type: "SLASH_COMMAND",
+      category: "Misc",
+    });
   }
 
-  ${execute()}
-};
+  async execute(interaction: CommandInteraction) {
+    await interaction.reply({ content: "Pong" });
+  }
+}
 `,
     "ping.ts",
   ];

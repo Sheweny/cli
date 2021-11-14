@@ -1,6 +1,4 @@
-import { ICreateOptions } from "../../../../../../typescript/interfaces/interfaces";
-
-export = (options: ICreateOptions) => {
+export = () => {
   return [
     `import { Event } from "sheweny";
 import type { ShewenyClient } from "sheweny";
