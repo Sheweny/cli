@@ -1,32 +1,22 @@
-import { ICreateOptions } from "../../../../../../typescript/interfaces/interfaces";
-
-export = (options: ICreateOptions) => {
-  function superCommand(): string {
-    return `super(client, {
-        name: "ping",
-        description: "Ping Pong",
-        type: "SLASH_COMMAND",
-        category : "Misc",
-      }
-    );`;
-  }
-
-  function execute(): string {
-    return `async execute(interaction) {
-    await interaction.reply({ content: "Pong" });
-  }`;
-  }
-
+export = () => {
   return [
     `const { Command } = require("sheweny");
 
 module.exports = class PingCommand extends Command {
   constructor(client) {
-    ${superCommand()}
+    super(client, {
+      name: "ping",
+      description: "Ping Pong",
+      type: "SLASH_COMMAND",
+      category: "Misc",
+    });
   }
 
-  ${execute()}
+  async execute(interaction) {
+    await interaction.reply({ content: "Pong" });
+  }
 };
+
 `,
     "ping.js",
   ];
