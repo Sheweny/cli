@@ -4,12 +4,10 @@ export interface ICommand {
   skipPrompts: boolean;
 }
 export interface ICreateOptions {
-  commandName?: "create";
   dirName?: string;
   targetDirectory?: string;
   templateDirectory?: string;
   template?: "javascript" | "typescript";
-  skipPrompts?: boolean;
   packageManager?: "npm" | "yarn";
   token?: string;
   git?: boolean;
@@ -18,14 +16,10 @@ export interface ICreateOptions {
   optionnalLibrary?: string[];
   version?: number;
 }
-
+export type AddType = "command" | "event" | "button" | "selectmenu" | "inhibitor";
 export interface IAddOptions {
-  commandName?: "add";
-  help: boolean;
-  skipPrompts?: boolean;
-  addType?: "command" | "event" | "button" | "selectmenu" | "inhibitor";
+  addType?: AddType;
   addName?: string;
-  commandType?: "MessageCommand" | "ApplicationCommand";
   eventOptions?: eventOptions;
   commandOptions?: commandOptions;
   templateDirectory?: string;
@@ -35,7 +29,7 @@ export interface IAddOptions {
 }
 
 interface commandOptions {
-  applicationCommandType?: "SLASH_COMMAND" | "CONTEXT_MENU_USER" | "CONTEXT_MENU_MESSAGE" | "MESSAGE_COMMAND";
+  type?: "SLASH_COMMAND" | "CONTEXT_MENU_USER" | "CONTEXT_MENU_MESSAGE" | "MESSAGE_COMMAND";
   description?: string;
   category?: string;
   only?: "DM" | "GUILD";
@@ -55,9 +49,5 @@ export interface ICliConfig {
     inhibitors: string | undefined;
     buttons: string | undefined;
     selectMenus: string | undefined;
-
-    // Old version support :
-    messageCommands: string | undefined;
-    applicationCommands: string | undefined;
   };
 }

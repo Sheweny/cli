@@ -1,4 +1,5 @@
 import { Project } from "./commands/create";
+import { Component } from "./commands/add";
 import { help } from "./commands/help/index";
 import { getArgs } from "./utils/getArgs";
 import { magenta, red } from "chalk";
@@ -14,19 +15,22 @@ export async function cli(args: string[]): Promise<void> {
     process.exit(1);
   }
   const options = await getArgs(args);
+  console.log(options);
+
   switch (options.commandName) {
     case "help":
       await help(options);
       break;
     case "create":
       const project = new Project(options);
-      const config = await project.getConfig();
-      await project.create(config);
+      const configCreate = await project.getConfig();
+      await project.create(configCreate);
       break;
-    // case "add":
-    //   const addOptions = await getAddOptions(options);
-    //   await addTemplate(addOptions);
-    //   break;
+    case "add":
+      const component = new Component(options);
+      const configComponent = await component.getConfig();
+      await component.create(configComponent);
+      break;
     default:
       console.log(`${red.bold("ERROR")} Invalid command\nRun "${magenta("sheweny")} --help" for more informations`);
       process.exit(1);
