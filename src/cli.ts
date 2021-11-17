@@ -1,5 +1,6 @@
 import { Project } from "./commands/create";
 import { Component } from "./commands/add";
+import { Init } from "./commands/init";
 import { getVersion } from "./commands/version";
 import { help } from "./commands/help/index";
 import { getArgs } from "./utils/getArgs";
@@ -19,6 +20,9 @@ export async function cli(args: string[]): Promise<void> {
   switch (options.commandName) {
     case "help":
       await help(options);
+      break;
+    case "init":
+      new Init();
       break;
     case "create":
       const project = new Project(options);

@@ -6,20 +6,14 @@ import * as chalk from "chalk";
 
 import { existsSync } from "fs";
 export async function renameDir(options: ICreateOptions): Promise<ICreateOptions> {
-  if (options.dirName)
-    options.dirName = options.dirName.replaceAll(
-      /<|>|:|"|\/|\\|\||\?|\*|(^(aux|con|clock|nul|prn|com[1-9]|lpt[1-9])$)/gi,
-      ""
-    );
+  if (options.dirName) options.dirName = options.dirName.replaceAll(/<|>|:|"|\/|\\|\||\?|\*|(^(aux|con|clock|nul|prn|com[1-9]|lpt[1-9])$)/gi, "");
   const pathProject = join(process.cwd(), options.dirName!);
 
   if (existsSync(pathProject) || !options.dirName) {
     const reg = new RegExp(/\_[0-9]{1,2}/);
     const match = options.dirName!.match(reg);
     if (match && match.index === options.dirName!.length - match[0].length) {
-      const number =
-        parseInt(options.dirName!.substring(match.index + 1, options.dirName!.length)) +
-        1;
+      const number = parseInt(options.dirName!.substring(match.index + 1, options.dirName!.length)) + 1;
       options = {
         ...options,
         dirName: options.dirName!.replace(reg, `_${number}`),

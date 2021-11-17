@@ -36,7 +36,7 @@ export class Project {
         dirName: this.options.arguments?.join(" ") || "Project_Bot",
         template: "javascript",
         packageManager: "npm",
-        handlers: ["COMMANDS", "EVENTS"],
+        handlers: ["commands", "events"],
         configFileType: "json",
         version: 3,
       };

@@ -5,12 +5,7 @@ import { resolve } from "path";
 import { IAddOptions } from "../../../typescript/interfaces/interfaces";
 export async function getTemplateDirectory(options: IAddOptions): Promise<IAddOptions> {
   try {
-    const templateDir = resolve(
-      require.main!.path,
-      "../lib/templates/add",
-      `${options.addType!}.js`
-    );
-
+    const templateDir = resolve(require.main!.path, "../lib/templates", `V${options.config?.version || "3"}`, "add", `${options.addType!}.js`);
     await access(templateDir, constants.R_OK);
     options = {
       ...options,
@@ -18,11 +13,7 @@ export async function getTemplateDirectory(options: IAddOptions): Promise<IAddOp
     };
     return options;
   } catch (err) {
-    console.log(
-      `${chalk.red.bold(
-        "ERROR"
-      )} The path for the ${options.addType!} template is not found`
-    );
+    console.log(`${chalk.red.bold("ERROR")} The path for the ${options.addType!} template is not found`);
     return process.exit(1);
   }
 }

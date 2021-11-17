@@ -25,22 +25,12 @@ export class Component {
     this.options = opts;
   }
   async init() {
-    let secondaryArg: string | undefined = this.options.arguments[0]?.toLowerCase();
     if (!(await readdir(process.cwd())).includes("cli-config.json")) {
-      console.log(`${chalk.red.bold("ERROR")} cli-config not found`);
-      return process.exit(1);
-    }
-    if (
-      !secondaryArg ||
-      (secondaryArg &&
-        secondaryArg !== "command" &&
-        secondaryArg !== "event" &&
-        secondaryArg !== "button" &&
-        secondaryArg !== "selectmenu" &&
-        secondaryArg !== "inhibitor")
-    ) {
-      console.log(`${chalk.red.bold("ERROR")} Invalid command
-Run "${chalk.magenta("sheweny")} --help add" for more informations`);
+      console.log(
+        `${chalk.red.bold("ERROR")} cli-config not found. Please use ${chalk.blue(
+          "sheweny init"
+        )} for initialise the CLI with an existing project or use ${chalk.blue("sheweny create")} for create a new project.`
+      );
       return process.exit(1);
     }
   }
@@ -67,30 +57,36 @@ Run "${chalk.magenta("sheweny")} --help add" for more informations`);
 
     const answers: any = await prompt([
       {
+        type: "list",
+        choices: ["Command", "Events", "Inhibitors", "Buttons", "Selectmenus"],
+        name: "addType",
+        message: "What do you want to create ?",
+      },
+      {
         type: "input",
         name: "addName",
-        message: `Please choose the name for the ${this.config.addType}:`,
+        message: `Please choose the name for the new component:`,
       },
       // COMMAND
       {
         type: "list",
         name: "commandType",
         message: "Please choose the type of Application Command:",
-        choices: ["Slash Command", "Context Menu User", "Context Menu Message", "Message command"],
+        choices: ["Slash Command", "Context Menu User", "Context Menu Message", "Message Command"],
         default: "Slash Command",
-        when: () => this.config.addType === "command",
+        when: (a) => a.addType.toLowerCase() === "command",
       },
       {
         type: "input",
         name: "commandDescription",
         message: "Please choose the description of the command:",
-        when: () => this.config.addType === "command",
+        when: (a) => a.addType.toLowerCase() === "command",
       },
       {
         type: "input",
         name: "commandCategory",
         message: "Please choose the category of the command:",
-        when: () => this.config.addType === "command",
+        when: (a) => a.addType.toLowerCase() === "command",
       },
       {
         type: "list",
@@ -98,28 +94,28 @@ Run "${chalk.magenta("sheweny")} --help add" for more informations`);
         message: "Please choose the command restriction:",
         choices: ["None", "DM", "GUILD"],
         default: "None",
-        when: () => this.config.addType === "command",
+        when: (a) => a.addType.toLowerCase() === "command",
       },
       {
         type: "number",
         name: "commandCooldown",
         message: "Please choose the cooldown of the command:",
         default: 0,
-        when: () => this.config.addType === "command",
+        when: (a) => a.addType.toLowerCase() === "command",
       },
       // EVENT
       {
         type: "input",
         name: "eventDescription",
         message: "Please choose the description of the event:",
-        when: () => this.config.addType === "event",
+        when: (a) => a.addType.toLowerCase() === "event",
       },
       {
         type: "confirm",
         name: "eventOnce",
         message: "Please choose if the event is once or not:",
         default: false,
-        when: () => this.config.addType === "event",
+        when: (a) => a.addType.toLowerCase() === "event",
       },
       // INHIBITOR
       {
@@ -127,11 +123,12 @@ Run "${chalk.magenta("sheweny")} --help add" for more informations`);
         name: "inhibitorsTypes",
         message: "What types of inhibitors do you want to put ?",
         choices: ["MESSAGE_COMMAND", "APPLICATION_COMMAND", "BUTTON", "SELECT_MENU", "ALL"],
-        when: () => this.config.addType === "inhibitor",
+        when: (a) => a.addType.toLowerCase() === "inhibitor",
       },
     ]);
 
-    return {
+    this.config = {
+      addType: answers.addType.toLowerCase(),
       addName: answers.addName || "exampleTemplate",
       commandOptions: {
         type: renameCommandType(answers.commandType),
@@ -146,6 +143,7 @@ Run "${chalk.magenta("sheweny")} --help add" for more informations`);
       },
       inhibitorsTypes: answers.inhibitorsTypes,
     };
+    return this.config;
   }
   async create(config: IAddOptions): Promise<void> {
     if (!config) throw new Error("The config is null");

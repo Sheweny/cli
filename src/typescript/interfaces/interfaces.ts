@@ -1,5 +1,5 @@
 export interface ICommand {
-  commandName?: "create" | "add" | "help" | "version";
+  commandName?: "create" | "add" | "help" | "version" | "init";
   arguments: string[];
   skipPrompts: boolean;
 }
@@ -26,6 +26,7 @@ export interface IAddOptions {
   config?: ICliConfig;
   target?: string;
   inhibitorsTypes?: string[];
+  version?: number;
 }
 
 interface commandOptions {
@@ -43,6 +44,7 @@ interface eventOptions {
 
 export interface ICliConfig {
   template: "javascript" | "typescript";
+  version?: number;
   handlers: {
     commands: string | undefined;
     events: string | undefined;
