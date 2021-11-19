@@ -17,12 +17,12 @@ ${options.config!.template === "javascript" ? "module.exports =" : "export"} cla
     super(
       client,
       {
-        name: "${options.addName!.toLowerCase()}",
-        description: "${options.commandOptions!.description}",
-        type: "${options.commandOptions!.type}",
-        category: "${options.commandOptions!.category}",
-        cooldown: ${options.commandOptions!.cooldown},
-        channel: "${options.commandOptions!.only}",
+        name: ${JSON.stringify(options.addName!.toLowerCase() || "default")},
+        description: ${JSON.stringify(options.commandOptions!.description || "Default description")},
+        type: ${JSON.stringify(options.commandOptions!.type || "SLASH_COMMAND")},
+        ${options.commandOptions!.category ? `category: "${options.commandOptions!.category}",` : ""}
+        cooldown: ${JSON.stringify(options.commandOptions!.cooldown || 0)},
+        ${options.commandOptions!.category ? `channel: "${options.commandOptions!.only}",` : ""}
       }
     );
   }

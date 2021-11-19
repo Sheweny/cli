@@ -1,5 +1,8 @@
 import { readdir, writeFile } from "fs/promises";
 import { red, grey, green } from "chalk";
+import { prompt } from "inquirer";
+import inquirer = require("inquirer");
+
 /**
  * Export a function for create a json file
  * The file name is cli-config.json
@@ -20,7 +23,9 @@ import { red, grey, green } from "chalk";
 export class Init {
   constructor() {
     this.checkExistingConfig().then(() => {
-      this.createConfig();
+      this.getOpts().then((opts) => {
+        this.createConfig(opts);
+      });
     });
   }
   async checkExistingConfig() {
@@ -30,10 +35,26 @@ export class Init {
     }
     return false;
   }
-  async createConfig() {
+  async getOpts() {
+    return await inquirer.prompt([
+      {
+        type: "list",
+        name: "template",
+        message: "Select a language",
+        choices: ["javascript", "typescript"],
+      },
+      {
+        type: "list",
+        name: "version",
+        message: "What is the of Sheweny ?",
+        choices: ["2", "3"],
+      },
+    ]);
+  }
+  async createConfig(opts: { template?: string; version?: number } = {}) {
     const config = {
-      template: "javascript",
-      version: 3,
+      template: opts.template || "javascript",
+      version: opts.version || 3,
       handlers: {
         commands: "src/commands",
         events: "src/events",

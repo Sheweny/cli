@@ -1,9 +1,12 @@
-import { defaultHelp, addArgHelp, addHelp, createHelp } from "./functions";
+import { defaultHelp, addArgHelp, addHelp, createHelp, initHelp } from "./functions";
 import type { ICommand } from "../../typescript/interfaces/interfaces";
 export function help(options: ICommand) {
   switch (options.arguments[0]?.toLowerCase()) {
     case "help":
       defaultHelp();
+      break;
+    case "init":
+      initHelp();
       break;
     case "create":
       createHelp();

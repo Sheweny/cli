@@ -21,11 +21,11 @@ ${chalk.yellow("Usage:")}
 - ${chalk.magenta("sheweny")} <command> [options]
 
 ${chalk.yellow("Commands:")}
-- ${chalk.magenta("sheweny")} create [project_name]
-- ${chalk.magenta("sheweny")} add <add_type>
-- ${chalk.magenta("sheweny")} help [argument]
-- ${chalk.magenta("sheweny")} version | --version | -v
-
+- ${chalk.magenta("sheweny")} init - ${chalk.dim("Initialize the CLI in an existing project")}
+- ${chalk.magenta("sheweny")} create [project_name] - ${chalk.dim("Create a new project")}
+- ${chalk.magenta("sheweny")} add <add_type> - ${chalk.dim("Add a new component to the project")}
+- ${chalk.magenta("sheweny")} help [argument] - ${chalk.dim("Display help for a specific command")}
+- ${chalk.magenta("sheweny")} version | --version | -v - ${chalk.dim("Display the version of the CLI")}
 
 `);
 }

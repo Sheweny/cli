@@ -12,7 +12,7 @@ export = (options: ICreateOptions) => {
   "template": "${options.template}",
   "version": 2,
   "handlers": {
-    "commannds": ${commands},
+    "commands": ${commands},
     "events": ${events},
     "inhibitors": ${inhibitors},
     "buttons": ${buttons},

@@ -58,7 +58,7 @@ export class Component {
     const answers: any = await prompt([
       {
         type: "list",
-        choices: ["Command", "Events", "Inhibitors", "Buttons", "Selectmenus"],
+        choices: ["Command", "Event", "Inhibitor", "Button", "Selectmenu"],
         name: "addType",
         message: "What do you want to create ?",
       },
@@ -173,7 +173,11 @@ export class Component {
       {
         title: ` 🖨️ Creating ${config.addType} template`,
         task: async () => {
-          await createTemplate(config);
+          try {
+            await createTemplate(config);
+          } catch (e: any) {
+            console.log(e);
+          }
         },
       },
     ]);

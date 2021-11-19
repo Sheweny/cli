@@ -9,10 +9,10 @@ import type { ShewenyClient } from "sheweny";
 import type { CommandInteraction } from "discord.js";`
   }
 
-${options.config!.template === "javascript" ? "module.exports =" : "export"} class ${options.addName}Inhibitor extends Inhibitor {
+${options.config!.template === "javascript" ? "module.exports =" : "export"} class NameInhibitor extends Inhibitor {
   constructor(client${options.config!.template === "typescript" ? ": ShewenyClient" : ""}) {
     super(client, "${options.addName}", {
-      type: ${options.inhibitorsTypes!},
+      type: ${options.inhibitorsTypes ? JSON.stringify(options.inhibitorsTypes) : ["ALL"]},
     });
   }
 
