@@ -18,28 +18,33 @@ export interface ICreateOptions {
 }
 export type AddType = "command" | "event" | "button" | "selectmenu" | "inhibitor";
 export interface IAddOptions {
-  addType?: AddType;
-  addName?: string;
-  eventOptions?: eventOptions;
-  commandOptions?: commandOptions;
+  addType: AddType;
+  addName: string;
+  eventOptions: eventOptions;
+  commandOptions: commandOptions;
+  inhibitorOptions: inhibitorOptions;
+  // Tacks
   templateDirectory?: string;
+  version?: number;
   config?: ICliConfig;
   target?: string;
-  inhibitorsTypes?: string[];
-  version?: number;
 }
 
 interface commandOptions {
-  type?: "SLASH_COMMAND" | "CONTEXT_MENU_USER" | "CONTEXT_MENU_MESSAGE" | "MESSAGE_COMMAND";
-  description?: string;
-  category?: string;
-  only?: "DM" | "GUILD";
-  cooldown?: number;
+  type: null | "SLASH_COMMAND" | "CONTEXT_MENU_USER" | "CONTEXT_MENU_MESSAGE" | "MESSAGE_COMMAND";
+  description: null | string;
+  category: null | string;
+  only: null | "DM" | "GUILD";
+  cooldown: null | number;
 }
 
 interface eventOptions {
   description?: string;
   once?: boolean;
+}
+
+interface inhibitorOptions {
+  type: string[];
 }
 
 export interface ICliConfig {

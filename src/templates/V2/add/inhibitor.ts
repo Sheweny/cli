@@ -11,7 +11,7 @@ import type { CommandInteraction } from "discord.js";`
 ${options.config!.template === "javascript" ? "module.exports =" : "export"} class NameInhibitor extends Inhibitor {
   constructor(client${options.config!.template === "typescript" ? ": ShewenyClient" : ""}) {
     super(client, "${options.addName}", {
-      type: ${options.inhibitorsTypes ? JSON.stringify(options.inhibitorsTypes) : ["ALL"]},
+      type: ${options.inhibitorOptions.type ? JSON.stringify(options.inhibitorOptions.type) : ["ALL"]},
     });
   }
 

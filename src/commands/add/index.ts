@@ -15,7 +15,7 @@ export class Component {
    * Config of the project
    * @param {IAddOptions} config
    */
-  public config: IAddOptions = {};
+  public config?: IAddOptions;
 
   /**
    * @constructor
@@ -40,19 +40,10 @@ export class Component {
    * @returns {Promise<IAddOptions>} -The config parameters
    */
   async getConfig(): Promise<IAddOptions> {
-    if (this.options.skipPrompts)
-      return {
-        addName: "newcomponent",
-        addType: ["command", "event", "inhibitor", "button", "selectmenu"].includes(this.options.arguments[0])
-          ? (this.options.arguments[0] as AddType)
-          : "command",
-        commandOptions: {
-          type: "SLASH_COMMAND",
-          description: "New component !",
-          cooldown: 0,
-        },
-      };
-
+    if (this.options.skipPrompts) {
+      console.log(`${chalk.red.bold("ERROR")} The --yes option is not supported in ${chalk.grey("add")} command.`);
+      process.exit(1);
+    }
     console.log(`\n📜 Please answer the questionnaires to get a better result\n`);
 
     const answers: any = await prompt([
@@ -129,19 +120,21 @@ export class Component {
 
     this.config = {
       addType: answers.addType.toLowerCase(),
-      addName: answers.addName || "exampleTemplate",
+      addName: answers.addName || "name",
       commandOptions: {
         type: renameCommandType(answers.commandType),
-        description: answers.commandDescription,
-        category: answers.commandCategory,
+        description: answers.commandDescription || "Default description",
+        category: answers.commandCategory || "Other",
         only: answers.commandOnly === "None" ? undefined : answers.commandOnly,
-        cooldown: answers.commandCooldown,
+        cooldown: answers.commandCooldown || 0,
       },
       eventOptions: {
-        description: answers.eventDescription,
-        once: answers.eventOnce,
+        description: answers.eventDescription || "Default description",
+        once: answers.eventOnce || false,
       },
-      inhibitorsTypes: answers.inhibitorsTypes,
+      inhibitorOptions: {
+        type: answers.inhibitorsTypes || ["ALL"],
+      },
     };
     return this.config;
   }
@@ -173,11 +166,7 @@ export class Component {
       {
         title: ` 🖨️ Creating ${config.addType} template`,
         task: async () => {
-          try {
-            await createTemplate(config);
-          } catch (e: any) {
-            console.log(e);
-          }
+          await createTemplate(config);
         },
       },
     ]);
@@ -187,8 +176,9 @@ export class Component {
       .then(() => {
         console.log(`\n🎉 Successfully add ${chalk.green(config.addType!)} template\n`);
       })
-      .catch(() => {
+      .catch((e) => {
         console.log(`${chalk.red.bold("ERROR")} An error has occurred`);
+        console.log(e.stack);
       });
   }
 }

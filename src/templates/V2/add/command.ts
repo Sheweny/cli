@@ -1,8 +1,6 @@
 import { IAddOptions } from "../../../typescript/interfaces/interfaces";
 
 export = (options: IAddOptions) => {
-  console.log(options);
-
   function command(): string {
     const importDjs = options.commandOptions!.type === "SLASH_COMMAND" ? "CommandInteraction" : "ContextMenuInteraction";
 
@@ -19,12 +17,12 @@ ${options.config!.template === "javascript" ? "module.exports =" : "export"} cla
     super(
       client,
       {
-        name: ${JSON.stringify(options.addName!.toLowerCase() || "default")},
-        description: ${JSON.stringify(options.commandOptions!.description || "Default description")},
-        type: ${JSON.stringify(options.commandOptions!.type || "SLASH_COMMAND")},
-        ${options.commandOptions!.category ? `category: "${options.commandOptions!.category}",` : ""}
-        cooldown: ${JSON.stringify(options.commandOptions!.cooldown || 0)},
-        ${options.commandOptions!.category ? `channel: "${options.commandOptions!.only}",` : ""}
+        name: ${options.addName.toLowerCase()},
+        description: "${options.commandOptions.description}",
+        type: "${options.commandOptions.type}",
+        ${options.commandOptions.category ? `category: "${options.commandOptions.category}",` : ""}
+        ${options.commandOptions.cooldown ? `cooldown: "${options.commandOptions.cooldown}",` : ""}
+        ${options.commandOptions.only ? `channel: "${options.commandOptions.only}",` : ""}
       }
     );
   }

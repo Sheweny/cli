@@ -10,9 +10,9 @@ import type { ShewenyClient } from "sheweny";`
 
 ${options.config!.template === "javascript" ? "module.exports =" : "export"} class ${options.addName}Event extends Event {
   constructor(client${options.config!.template === "typescript" ? ": ShewenyClient" : ""}) {
-    super(client, "${options.addName!}", {
-      description: ${JSON.stringify(options.eventOptions?.description || "Default description")},
-      once: ${JSON.stringify(options.eventOptions?.once || false)},
+    super(client, "${options.addName}", {
+      description: ${options.eventOptions.description},
+      once: ${options.eventOptions.once},
     });
   }
 
