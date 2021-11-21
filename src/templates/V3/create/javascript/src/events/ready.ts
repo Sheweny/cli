@@ -7,7 +7,7 @@ module.exports = class ReadyEvent extends Event {
     super(client, "ready", {
       description: "Client is logged in",
       once: true,
-      emitter: this.client,
+      emitter: client,
     });
   }
 

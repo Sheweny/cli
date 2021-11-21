@@ -11,7 +11,7 @@ export class BlackListInhibitor extends Inhibitor {
     });
   }
 
-  execute(interaction: CommandInteraction) {
+  execute(client: ShewenyClient, interaction: CommandInteraction) {
     // Put a guild id
     return !["<guildId>"].includes(interaction.guildId!);
   }

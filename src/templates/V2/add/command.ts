@@ -14,14 +14,12 @@ import type { ${importDjs} } from "discord.js";`
 
 ${options.config!.template === "javascript" ? "module.exports =" : "export"} class ${options.addName}Command extends Command {
   constructor(client${options.config!.template === "typescript" ? ": ShewenyClient" : ""}) {
-    super(
-      client,
-      {
-        name: ${options.addName.toLowerCase()},
+    super(client, {
+        name: "${options.addName.toLowerCase()}",
         description: "${options.commandOptions.description}",
         type: "${options.commandOptions.type}",
         ${options.commandOptions.category ? `category: "${options.commandOptions.category}",` : ""}
-        ${options.commandOptions.cooldown ? `cooldown: "${options.commandOptions.cooldown}",` : ""}
+        ${options.commandOptions.cooldown ? `cooldown: ${options.commandOptions.cooldown},` : ""}
         ${options.commandOptions.only ? `channel: "${options.commandOptions.only}",` : ""}
       }
     );
