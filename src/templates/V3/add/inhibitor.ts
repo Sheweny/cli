@@ -15,11 +15,11 @@ ${options.config!.template === "javascript" ? "module.exports =" : "export"} cla
     });
   }
 
-  execute(interaction${options.config!.template === "typescript" ? `: CommandInteraction` : ""}) {
+  execute(client: ShewenyClient, interaction${options.config!.template === "typescript" ? `: CommandInteraction` : ""}) {
     return !["877090306103840778"].includes(interaction.guildId!);
   }
 
-  async onFailure(interaction${options.config!.template === "typescript" ? `: CommandInteraction` : ""}) {
+  async onFailure(client: ShewenyClient, interaction${options.config!.template === "typescript" ? `: CommandInteraction` : ""}) {
     await interaction.reply("Your guild is blacklisted.");
   }
 };
