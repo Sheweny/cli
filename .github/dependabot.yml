@@ -10,3 +10,7 @@ updates:
     schedule:
       interval: "daily"
     target-branch: "dev"
+  reviewers:
+    - Smaug6739
+  assignees:
+    - Smaug6739
