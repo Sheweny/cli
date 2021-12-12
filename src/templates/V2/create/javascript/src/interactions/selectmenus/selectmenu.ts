@@ -1,4 +1,4 @@
-export = () => {
+export default () => {
   return [
     `const { SelectMenu } = require("sheweny");
   

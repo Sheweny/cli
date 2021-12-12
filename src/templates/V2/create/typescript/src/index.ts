@@ -1,6 +1,6 @@
 import { ICreateOptions } from "../../../../../typescript/interfaces/interfaces";
 
-export = (options: ICreateOptions) => {
+export default (options: ICreateOptions) => {
   function handlers() {
     let result = "";
 

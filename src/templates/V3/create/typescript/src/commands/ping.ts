@@ -1,6 +1,6 @@
 import { ICreateOptions } from "../../../../../../typescript/interfaces/interfaces";
 
-export = (options: ICreateOptions) => {
+export default (options: ICreateOptions) => {
   return [
     `import { Command } from "sheweny";
 import type { ShewenyClient } from "sheweny";

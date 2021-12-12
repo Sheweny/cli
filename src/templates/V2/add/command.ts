@@ -1,6 +1,6 @@
 import { IAddOptions } from "../../../typescript/interfaces/interfaces";
 
-export = (options: IAddOptions) => {
+export default (options: IAddOptions) => {
   function command(): string {
     const importDjs = options.commandOptions!.type === "SLASH_COMMAND" ? "CommandInteraction" : "ContextMenuInteraction";
 
