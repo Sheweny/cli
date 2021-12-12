@@ -1,7 +1,6 @@
 import { readdir, writeFile } from "fs/promises";
 import { red, grey, green } from "chalk";
-import { prompt } from "inquirer";
-import inquirer = require("inquirer");
+import * as inquirer from "inquirer";
 
 /**
  * Export a function for create a json file
