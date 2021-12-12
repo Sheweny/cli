@@ -1,5 +1,5 @@
 import * as arg from "arg";
-import * as chalk from "chalk";
+import chalk from "chalk";
 import { ICommand } from "../typescript/interfaces/interfaces";
 import { readdir } from "fs/promises";
 

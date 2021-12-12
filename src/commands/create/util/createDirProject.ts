@@ -2,7 +2,7 @@ import { mkdir } from "fs/promises";
 import { join } from "path";
 import { ICreateOptions } from "../../../typescript/interfaces/interfaces";
 
-import * as chalk from "chalk";
+import chalk from "chalk";
 
 import { existsSync } from "fs";
 export async function renameDir(options: ICreateOptions): Promise<ICreateOptions> {

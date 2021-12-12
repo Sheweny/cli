@@ -1,4 +1,4 @@
-import * as chalk from "chalk";
+import chalk from "chalk";
 import { constants } from "fs";
 import { access } from "fs/promises";
 import { resolve } from "path";

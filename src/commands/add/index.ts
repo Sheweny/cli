@@ -2,7 +2,7 @@ import { prompt } from "inquirer";
 import type { ICommand, IAddOptions, AddType } from "../../typescript/interfaces/interfaces";
 import { renameCommandType } from "./util";
 import * as Listr from "listr";
-import * as chalk from "chalk";
+import chalk from "chalk";
 import { readdir } from "fs/promises";
 import { createTemplate, resolveHandlersDir, checkPath, getTemplateDirectory, getCliConfig } from "./util";
 export class Component {

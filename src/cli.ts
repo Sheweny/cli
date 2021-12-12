@@ -4,16 +4,16 @@ import { Init } from "./commands/init";
 import { getVersion } from "./commands/version";
 import { help } from "./commands/help/index";
 import { getArgs } from "./utils/getArgs";
-import { red } from "chalk";
+import chalk from "chalk";
 export async function cli(args: string[]): Promise<void> {
   const majorVersion = parseInt(process.version.split(".")[0]);
   const minorVersion = parseInt(process.version.split(".")[1]);
 
   if (majorVersion < 16) {
-    console.log(`${red.bold("ERROR")} You must have nodejs 16.6.0 or higher for use discord.js V13 `);
+    console.log(`${chalk.red.bold("ERROR")} You must have nodejs 16.6.0 or higher for use discord.js V13 `);
     process.exit(1);
   } else if (majorVersion == 16 && minorVersion < 6) {
-    console.log(`${red.bold("ERROR")} You must have nodejs 16.6.0 or higher for use discord.js V13 `);
+    console.log(`${chalk.red.bold("ERROR")} You must have nodejs 16.6.0 or higher for use discord.js V13 `);
     process.exit(1);
   }
   const options = await getArgs(args);

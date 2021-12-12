@@ -2,7 +2,7 @@ import { prompt } from "inquirer";
 import { ICreateOptions, ICommand } from "../../typescript/interfaces/interfaces";
 import * as Listr from "listr";
 import * as execa from "execa";
-import * as chalk from "chalk";
+import chalk from "chalk";
 import { createDirProject, addInfosPackageJson, getTemplateDirectory, copyFiles } from "./util";
 
 export class Project {

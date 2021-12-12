@@ -1,7 +1,7 @@
 import { mkdir, readdir, stat, writeFile } from "fs/promises";
 import { join } from "path";
 import { ICreateOptions } from "../../../typescript/interfaces/interfaces";
-import * as chalk from "chalk";
+import chalk from "chalk";
 
 function checkFile(options: ICreateOptions, file: string) {
   const dirHandlers = ["events", "commands", "buttons", "selectmenus", "inhibitors"];
