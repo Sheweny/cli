@@ -1,7 +1,7 @@
+import { constants } from "node:fs";
+import { access } from "node:fs/promises";
+import { resolve } from "node:path";
 import chalk from "chalk";
-import { constants } from "fs";
-import { access } from "fs/promises";
-import { resolve } from "path";
 import { IAddOptions } from "../../../typescript/interfaces/interfaces";
 export async function getTemplateDirectory(options: IAddOptions): Promise<IAddOptions> {
   try {

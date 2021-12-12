@@ -1,7 +1,7 @@
-export { renameCommandType } from "./renameCommandType";
-export { checkPath } from "./checkPath";
-export { createTemplate } from "./createTemplate";
-export { getCliConfig } from "./getCliConfig";
-export { getTemplateDirectory } from "./getTemplateDirectory";
-export { renameFile } from "./renameFile";
-export { resolveHandlersDir } from "./resolveHandlersDir";
+export { renameCommandType } from "./renameCommandType.js";
+export { checkPath } from "./checkPath.js";
+export { createTemplate } from "./createTemplate.js";
+export { getCliConfig } from "./getCliConfig.js";
+export { getTemplateDirectory } from "./getTemplateDirectory.js";
+export { renameFile } from "./renameFile.js";
+export { resolveHandlersDir } from "./resolveHandlersDir.js";

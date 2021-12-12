@@ -1,7 +1,7 @@
-import { writeFile } from "fs/promises";
-import { resolve } from "path";
+import { writeFile } from "node:fs/promises";
+import { resolve } from "node:path";
 import { IAddOptions } from "../../../typescript/interfaces/interfaces";
-import { renameFile } from "../../add/util/renameFile";
+import { renameFile } from "../../add/util/renameFile.js";
 
 export async function createTemplate(options: IAddOptions): Promise<void> {
   const file: string = (await import(options.templateDirectory!))(options);

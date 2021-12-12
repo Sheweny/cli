@@ -1,9 +1,9 @@
-import { Project } from "./commands/create";
-import { Component } from "./commands/add";
-import { Init } from "./commands/init";
-import { getVersion } from "./commands/version";
-import { help } from "./commands/help/index";
-import { getArgs } from "./utils/getArgs";
+import { Project } from "./commands/create/index.js";
+import { Component } from "./commands/add/index.js";
+import { Init } from "./commands/init/index.js";
+import { getVersion } from "./commands/version/index.js";
+import { help } from "./commands/help/index.js";
+import { getArgs } from "./utils/getArgs.js";
 import chalk from "chalk";
 export async function cli(args: string[]): Promise<void> {
   const majorVersion = parseInt(process.version.split(".")[0]);

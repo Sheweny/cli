@@ -1,4 +1,4 @@
-export { addInfosPackageJson } from "./addInfosPackageJson";
-export { createDirProject } from "./createDirProject";
-export { getTemplateDirectory } from "./getTemplateDirectory";
-export { copyFiles } from "./copyFiles";
+export { addInfosPackageJson } from "./addInfosPackageJson.js";
+export { createDirProject } from "./createDirProject.js";
+export { getTemplateDirectory } from "./getTemplateDirectory.js";
+export { copyFiles } from "./copyFiles.js";

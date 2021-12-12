@@ -1,6 +1,6 @@
-import { writeFile } from "fs/promises";
-import { join } from "path";
-import { ICreateOptions } from "../../../typescript/interfaces/interfaces";
+import { writeFile } from "node:fs/promises";
+import { join } from "node:path";
+import type { ICreateOptions } from "../../../typescript/interfaces/interfaces";
 
 export async function addInfosPackageJson(options: ICreateOptions): Promise<void> {
   const filePath = join(options.targetDirectory!, "package.json");

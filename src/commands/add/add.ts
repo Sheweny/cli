@@ -1,7 +1,7 @@
 import chalk from "chalk";
 import * as Listr from "listr";
-import { IAddOptions } from "../../typescript/interfaces/interfaces";
-import { createTemplate, resolveHandlersDir, checkPath, getTemplateDirectory, getCliConfig } from "./util";
+import { createTemplate, resolveHandlersDir, checkPath, getTemplateDirectory, getCliConfig } from "./util/index.js";
+import type { IAddOptions } from "../../typescript/interfaces/interfaces";
 export async function addTemplate(options: IAddOptions): Promise<any> {
   console.log("");
 

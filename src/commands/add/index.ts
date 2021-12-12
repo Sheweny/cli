@@ -1,10 +1,10 @@
-import { prompt } from "inquirer";
-import type { ICommand, IAddOptions, AddType } from "../../typescript/interfaces/interfaces";
-import { renameCommandType } from "./util";
+import { readdir } from "fs/promises";
+import inquirer from "inquirer";
 import * as Listr from "listr";
 import chalk from "chalk";
-import { readdir } from "fs/promises";
-import { createTemplate, resolveHandlersDir, checkPath, getTemplateDirectory, getCliConfig } from "./util";
+import { createTemplate, resolveHandlersDir, checkPath, getTemplateDirectory, getCliConfig, renameCommandType } from "./util/index.js";
+import type { ICommand, IAddOptions } from "../../typescript/interfaces/interfaces";
+const { prompt } = inquirer;
 export class Component {
   /**
    * The options of the command

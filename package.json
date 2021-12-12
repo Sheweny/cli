@@ -14,6 +14,7 @@
     "type": "git",
     "url": "git+https://github.com/Sheweny/cli.git"
   },
+  "type": "module",
   "keywords": [
     "cli",
     "sheweny",

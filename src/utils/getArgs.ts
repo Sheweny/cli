@@ -1,7 +1,5 @@
-import * as arg from "arg";
-import chalk from "chalk";
+import arg from "arg";
 import { ICommand } from "../typescript/interfaces/interfaces";
-import { readdir } from "fs/promises";
 
 export async function getArgs(rawArgs: string[]): Promise<ICommand> {
   const args = arg(

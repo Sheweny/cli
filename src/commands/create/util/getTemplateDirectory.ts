@@ -1,8 +1,8 @@
-import { access } from "fs/promises";
-import { constants } from "fs";
-import { resolve } from "path";
-import { ICreateOptions } from "../../../typescript/interfaces/interfaces";
+import { access } from "node:fs/promises";
+import { constants } from "node:fs";
+import { resolve } from "node:path";
 import chalk from "chalk";
+import type { ICreateOptions } from "../../../typescript/interfaces/interfaces";
 export async function getTemplateDirectory(options: ICreateOptions): Promise<ICreateOptions> {
   try {
     const templateDir = resolve(require.main!.path, "../lib/templates", `V${options.version}`, "create", options.template!);

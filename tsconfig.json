@@ -1,13 +1,14 @@
 {
   "compilerOptions": {
-    "lib": ["ES2021"],
-    "target": "ES2021",
+    "lib": ["ESnext"],
+    "target": "ESnext",
     "module": "es2022",
     "noEmitOnError": true,
     "strict": true,
     "moduleResolution": "node",
     "sourceMap": false,
-    "outDir": "./lib"
+    "outDir": "./lib",
+    "allowSyntheticDefaultImports": true
   },
   "include": ["src"],
   "exclude": ["node_modules"]

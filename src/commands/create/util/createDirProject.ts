@@ -1,10 +1,9 @@
-import { mkdir } from "fs/promises";
-import { join } from "path";
-import { ICreateOptions } from "../../../typescript/interfaces/interfaces";
-
+import { mkdir } from "node:fs/promises";
+import { join } from "node:path";
+import { existsSync } from "node:fs";
 import chalk from "chalk";
+import type { ICreateOptions } from "../../../typescript/interfaces/interfaces";
 
-import { existsSync } from "fs";
 export async function renameDir(options: ICreateOptions): Promise<ICreateOptions> {
   if (options.dirName) options.dirName = options.dirName.replaceAll(/<|>|:|"|\/|\\|\||\?|\*|(^(aux|con|clock|nul|prn|com[1-9]|lpt[1-9])$)/gi, "");
   const pathProject = join(process.cwd(), options.dirName!);
