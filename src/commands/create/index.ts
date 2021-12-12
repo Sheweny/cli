@@ -1,5 +1,5 @@
 import inquirer from "inquirer";
-import * as Listr from "listr";
+import Listr from "listr";
 import { execa } from "execa";
 import chalk from "chalk";
 import { createDirProject, addInfosPackageJson, getTemplateDirectory, copyFiles } from "./util/index.js";

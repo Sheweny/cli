@@ -1,6 +1,6 @@
 import { readdir } from "fs/promises";
 import inquirer from "inquirer";
-import * as Listr from "listr";
+import Listr from "listr";
 import chalk from "chalk";
 import { createTemplate, resolveHandlersDir, checkPath, getTemplateDirectory, getCliConfig, renameCommandType } from "./util/index.js";
 import type { ICommand, IAddOptions } from "../../typescript/interfaces/interfaces";
