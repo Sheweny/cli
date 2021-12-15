@@ -1,11 +1,9 @@
-import { existsSync } from "fs";
-import { join } from "path";
+import { existsSync } from "node:fs";
+import { join } from "node:path";
 import { IAddOptions } from "../../../typescript/interfaces/interfaces";
 
 export async function renameFile(file: string, options: IAddOptions): Promise<string> {
-  let fileName = `${file.toLowerCase()}${
-    options.config!.template === "javascript" ? ".js" : ".ts"
-  }`;
+  let fileName = `${file.toLowerCase()}${options.config!.template === "javascript" ? ".js" : ".ts"}`;
   const pathFile = join(options.target!, fileName);
 
   if (existsSync(pathFile)) {

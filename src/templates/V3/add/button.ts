@@ -1,6 +1,6 @@
 import { IAddOptions } from "../../../typescript/interfaces/interfaces";
 
-export = (options: IAddOptions) => {
+export default (options: IAddOptions) => {
   return `${
     options.config!.template === "javascript"
       ? `const { Button } = require("sheweny");`

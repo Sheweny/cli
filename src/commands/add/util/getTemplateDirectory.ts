@@ -1,11 +1,14 @@
-import * as chalk from "chalk";
-import { constants } from "fs";
-import { access } from "fs/promises";
-import { resolve } from "path";
+import { constants } from "node:fs";
+import { access } from "node:fs/promises";
+import { resolve, dirname } from "node:path";
+import { fileURLToPath } from "node:url";
+import chalk from "chalk";
 import { IAddOptions } from "../../../typescript/interfaces/interfaces";
 export async function getTemplateDirectory(options: IAddOptions): Promise<IAddOptions> {
   try {
-    const templateDir = resolve(require.main!.path, "../lib/templates", `V${options.config?.version || "3"}`, "add", `${options.addType!}.js`);
+    const curentdir = dirname(fileURLToPath(import.meta.url));
+
+    const templateDir = resolve(curentdir, "../../../templates", `V${options.config?.version || "3"}`, "add", `${options.addType!}.js`);
     await access(templateDir, constants.R_OK);
     options = {
       ...options,

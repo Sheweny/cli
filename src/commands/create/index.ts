@@ -1,10 +1,10 @@
-import { prompt } from "inquirer";
-import { ICreateOptions, ICommand } from "../../typescript/interfaces/interfaces";
-import * as Listr from "listr";
-import * as execa from "execa";
-import * as chalk from "chalk";
-import { createDirProject, addInfosPackageJson, getTemplateDirectory, copyFiles } from "./util";
-
+import inquirer from "inquirer";
+import Listr from "listr";
+import { execa } from "execa";
+import chalk from "chalk";
+import { createDirProject, addInfosPackageJson, getTemplateDirectory, copyFiles } from "./util/index.js";
+import type { ICreateOptions, ICommand } from "../../typescript/interfaces/interfaces";
+const { prompt } = inquirer;
 export class Project {
   /**
    * The options of the command

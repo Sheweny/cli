@@ -1,4 +1,4 @@
-import { IAddOptions } from "../../../typescript/interfaces/interfaces";
+import type { IAddOptions } from "../../../typescript/interfaces/interfaces";
 
 export function resolveHandlersDir(options: IAddOptions): string | undefined {
   if (options.addType === "command") return options.config!.handlers?.commands;

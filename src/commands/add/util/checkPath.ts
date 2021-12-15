@@ -1,9 +1,9 @@
-import * as chalk from "chalk";
+import chalk from "chalk";
 import { constants } from "fs";
 import { access } from "fs/promises";
 import { resolve } from "path";
 import { IAddOptions } from "../../../typescript/interfaces/interfaces";
-import { resolveHandlersDir } from "./resolveHandlersDir";
+import { resolveHandlersDir } from "./resolveHandlersDir.js";
 export async function checkPath(options: IAddOptions): Promise<IAddOptions> {
   try {
     const pathDir = resolve(process.cwd(), resolveHandlersDir(options)!);

@@ -1,13 +1,7 @@
-import * as chalk from "chalk";
-import * as Listr from "listr";
-import { IAddOptions } from "../../typescript/interfaces/interfaces";
-import {
-  createTemplate,
-  resolveHandlersDir,
-  checkPath,
-  getTemplateDirectory,
-  getCliConfig,
-} from "./util";
+import chalk from "chalk";
+import Listr from "listr";
+import { createTemplate, resolveHandlersDir, checkPath, getTemplateDirectory, getCliConfig } from "./util/index.js";
+import type { IAddOptions } from "../../typescript/interfaces/interfaces";
 export async function addTemplate(options: IAddOptions): Promise<any> {
   console.log("");
 
@@ -28,11 +22,7 @@ export async function addTemplate(options: IAddOptions): Promise<any> {
       title: " 📁 Check if the path exists",
       task: async () => {
         if (resolveHandlersDir(options) === null) {
-          console.log(
-            `${chalk.red.bold(
-              "ERROR"
-            )} The path for ${options.addType!} handler is null\nChange cli-config.json to correct this`
-          );
+          console.log(`${chalk.red.bold("ERROR")} The path for ${options.addType!} handler is null\nChange cli-config.json to correct this`);
           return process.exit(1);
         }
         options = await checkPath(options);

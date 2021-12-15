@@ -1,4 +1,4 @@
-export = () => {
+export default () => {
   return [
     `import { SelectMenu } from "sheweny";
 import type { ShewenyClient } from "sheweny";

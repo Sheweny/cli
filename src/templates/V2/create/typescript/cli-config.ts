@@ -1,6 +1,6 @@
 import { ICreateOptions } from "../../../../typescript/interfaces/interfaces";
 
-export = (options: ICreateOptions) => {
+export default (options: ICreateOptions) => {
   const commands = options.handlers!.includes("commands") ? `"src/commands"` : null;
   const events = options.handlers!.includes("events") ? `"src/events"` : null;
   const inhibitors = options.handlers!.includes("inhibitors") ? `"src/inhibitors"` : null;

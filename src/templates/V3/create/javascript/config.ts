@@ -1,6 +1,6 @@
 import { ICreateOptions } from "../../../../typescript/interfaces/interfaces";
 
-export = (options: ICreateOptions) => {
+export default (options: ICreateOptions) => {
   const token = options.token ? options.token : "your_token";
   const file = options.configFileType;
 

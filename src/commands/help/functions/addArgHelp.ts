@@ -1,4 +1,4 @@
-import * as chalk from "chalk";
+import chalk from "chalk";
 import type { ICommand } from "../../../typescript/interfaces/interfaces";
 
 export function addArgHelp(options: ICommand) {
