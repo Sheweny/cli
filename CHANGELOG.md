@@ -7,6 +7,7 @@
 ### Changed
 
 - CLI Structure: The CLI is now pure ESM module ([300385b](https://github.com/Sheweny/cli/commit/300385b66441735cd30d0cc6c7e68a132feb2ccd)).
+- Github: Improve README.md style ([5eb2eb1](https://github.com/Sheweny/cli/commit/5eb2eb1b57c8c2b40e1824c3ada20b771dc63c7e)).
 
 ### Fixed
 

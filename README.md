@@ -22,8 +22,8 @@ This module is a CLI (Command Line Interface) for create discord bots with Shewe
   - [Add command](#add-command-)
   - [Init command](#init-command-)
   - [Version command](#version-command-)
-- [Common errors](#common-errors-)
-- [Contributions/Licence](#contributions-licence-)
+- [Common errors](#common-errors-%EF%B8%8F)
+- [Contributions/Licence](#contributionslicence-)
 - [Help](#need-help-)
 
 ## Getting started ✨
