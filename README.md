@@ -1,6 +1,6 @@
 # Sheweny CLI
 
-![sheweny](https://cdn.discordapp.com/attachments/881988260925153322/882027519753224244/sheweny_baniere.png | heigth="500")
+![sheweny_baniere (5)](https://user-images.githubusercontent.com/59796136/146163807-a14768d5-c8c9-4968-a55f-a19157cf6ead.png)
 
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/Sheweny/cli)
 [![made-with-Markdown](https://img.shields.io/badge/Made%20with-Typescript-1f425f.svg)](http://commonmark.org)
