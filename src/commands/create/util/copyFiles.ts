@@ -15,8 +15,6 @@ export async function copyFiles(
   target: string = options.targetDirectory!
 ): Promise<void> {
   try {
-    console.log(template);
-
     const templateFiles = await readdir(template);
     for (const file of templateFiles) {
       const fileStat = await stat(resolve(template, file));
@@ -32,7 +30,6 @@ export async function copyFiles(
       }
     }
   } catch (err) {
-    console.error(err);
     console.log(`${chalk.red.bold("ERROR")} An error occurred while copying the files`);
     return process.exit(1);
   }
