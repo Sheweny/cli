@@ -10,7 +10,7 @@ updates:
   directory: '/'
   target-branch: "dev"
   schedule:
-    interval: daily
+    interval: "daily"
   reviewers:
     - Smaug6739
   assignees:
