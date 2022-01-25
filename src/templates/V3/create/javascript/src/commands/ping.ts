@@ -9,7 +9,7 @@ module.exports = class PingCommand extends Command {
       description: "Ping Pong",
       type: "SLASH_COMMAND",
       category: "Misc",
-      cooldown: 3000,
+      cooldown: 3,
     });
   }
 
