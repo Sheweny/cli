@@ -2,11 +2,27 @@
 
 **All notable changes to this project will be documented in this file.**
 
+# [[2.1.1]](https://github.com/Sheweny/cli/compare/2.0.3...2.1.0) January 25, 2021
+
+### Added
+
+- Fix cooldown command ([ae017d4](https://github.com/Sheweny/cli/commit/ae017d4970a00d0e1dd47d0bcdcf7037c5a89d5e) [41fe8c6](https://github.com/Sheweny/cli/commit/41fe8c624447a552aae80279da452acc181f80e0))
+
+# [[2.1.0]](https://github.com/Sheweny/cli/compare/2.0.3...2.1.0) January 25, 2021
+
+### Added
+
+- Support of pnpm ([#45](https://github.com/Sheweny/cli/issues/45) [eeee2f9](https://github.com/Sheweny/cli/commit/eeee2f927cbb15a272df5c05b741b9495824d5e3))
+
+### Fixed
+
+- Fix init command ([7b178ae](https://github.com/Sheweny/cli/commit/7b178ae536c7d1cae0964da9e0f33c9b79322bd6))
+
 # [[2.0.3]](https://github.com/Sheweny/cli/compare/2.0.1...2.0.3) December 19, 2021
 
 ### Fixed
 
-Fix usege of Sheweny cli
+Fix usage of Sheweny cli
 
 # [[2.0.1]](https://github.com/Sheweny/cli/compare/2.0.0...2.0.1) December 15, 2021
 
