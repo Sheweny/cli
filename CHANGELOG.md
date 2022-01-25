@@ -4,7 +4,7 @@
 
 # [[2.1.1]](https://github.com/Sheweny/cli/compare/2.1.0...2.1.1) January 25, 2021
 
-### Added
+### Fixed
 
 - Fix cooldown command ([ae017d4](https://github.com/Sheweny/cli/commit/ae017d4970a00d0e1dd47d0bcdcf7037c5a89d5e) [41fe8c6](https://github.com/Sheweny/cli/commit/41fe8c624447a552aae80279da452acc181f80e0))
 
