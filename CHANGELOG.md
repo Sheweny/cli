@@ -2,7 +2,7 @@
 
 **All notable changes to this project will be documented in this file.**
 
-# [[2.1.1]](https://github.com/Sheweny/cli/compare/2.0.3...2.1.0) January 25, 2021
+# [[2.1.1]](https://github.com/Sheweny/cli/compare/2.1.0...2.1.1) January 25, 2021
 
 ### Added
 
