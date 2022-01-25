@@ -74,7 +74,7 @@ export class Project {
         type: "list",
         name: "packageManager",
         message: "Which package manager do you want to install the packages with ?",
-        choices: ["Npm", "Yarn"],
+        choices: ["Npm", "Yarn", "Pnpm"],
         default: "Npm",
         when: (answer) => answer.runInstall,
       },
@@ -195,10 +195,23 @@ export class Project {
       },
       {
         title: " 🗃️ Install packages with npm",
-        enabled: (ctx) => config.packageManager === "npm" || ctx.yarn === false,
+        enabled: (ctx) => config.packageManager === "npm",
         task: async (ctx, task) => {
           try {
             await execa("npm", ["install"], {
+              cwd: config.targetDirectory,
+            });
+          } catch (err) {
+            task.skip("An error has occurred");
+          }
+        },
+      },
+      {
+        title: " 🗃️ Install packages with pnpm",
+        enabled: () => config.packageManager === "pnpm",
+        task: async (_, task) => {
+          try {
+            await execa("pnpm", ["install"], {
               cwd: config.targetDirectory,
             });
           } catch (err) {

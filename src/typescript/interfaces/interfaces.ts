@@ -8,7 +8,7 @@ export interface ICreateOptions {
   targetDirectory?: string;
   templateDirectory?: string;
   template?: "javascript" | "typescript";
-  packageManager?: "npm" | "yarn";
+  packageManager?: "npm" | "yarn" | "pnpm";
   token?: string;
   git?: boolean;
   handlers?: string[];
