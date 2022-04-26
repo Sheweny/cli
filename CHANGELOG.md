@@ -2,6 +2,14 @@
 
 **All notable changes to this project will be documented in this file.**
 
+# [[2.1.3]](https://github.com/Sheweny/cli/compare/2.1.2...2.1.3) April 26, 2022
+
+### Fixed
+
+- Help: Fix prefix colors on powershell terminal ([fe44e95](https://github.com/Sheweny/cli/commit/fe44e952dade30a70ff66afd85652aadb829a664))
+- Templates: Remove class names ([35d4a54](https://github.com/Sheweny/cli/commit/35d4a5438dc6d61514f88d14c33d7dfe3d7cbc11))
+- Create: Correct sentence ([1806c5f](https://github.com/Sheweny/cli/commit/1806c5f79942c4deeea500a2feeea5ac4dcd4d45))
+
 # [[2.1.2]](https://github.com/Sheweny/cli/compare/2.1.1...2.1.2) April 10, 2022
 
 ### Dependencies
