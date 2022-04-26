@@ -67,7 +67,7 @@ export class Project {
       {
         type: "confirm",
         name: "runInstall",
-        message: "Do you want install the packages ?",
+        message: "Do you want to install the packages ?",
         default: true,
       },
       {
