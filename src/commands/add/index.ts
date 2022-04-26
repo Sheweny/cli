@@ -174,7 +174,7 @@ export class Component {
     tasks
       .run()
       .then(() => {
-        console.log(`\n🎉 Successfully add ${chalk.green(config.addType!)} template\n`);
+        console.log(`\n🎉 Successfully add ${chalk.blue(config.addType!)} template\n`);
       })
       .catch((e) => {
         console.log(`${chalk.red.bold("ERROR")} An error has occurred`);

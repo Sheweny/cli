@@ -5,10 +5,10 @@ export function addArgHelp(options: ICommand) {
   console.log(`
 ${chalk.blue("Sheweny command line interface : add", options.arguments[1])}
   
-${chalk.green("Add a new component to your discord bot")}.
+${chalk.blue("Add a new component to your discord bot")}.
 
 ${chalk.yellow("Usage:")}
-${chalk.magenta("sheweny")} add ${options.arguments[1]}
+${chalk.blue("sheweny")} add ${options.arguments[1]}
 
 ${chalk.yellow("Options:")}
 [${chalk.grey("-y")}|${chalk.grey("--yes")}]

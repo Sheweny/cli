@@ -39,7 +39,7 @@ export async function addTemplate(options: IAddOptions): Promise<any> {
   tasks
     .run()
     .then(() => {
-      console.log(`\n🎉 Successfully add ${chalk.green(options.addType!)} template\n`);
+      console.log(`\n🎉 Successfully add ${chalk.blue(options.addType!)} template\n`);
     })
     .catch(() => {
       console.log(`${chalk.red.bold("ERROR")} An error has occurred`);

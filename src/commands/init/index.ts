@@ -63,7 +63,7 @@ export class Init {
       },
     };
     await writeFile(`${process.cwd()}/cli-config.json`, JSON.stringify(config, null, 2));
-    console.log(chalk.green(`🎉 Sheweny successfully initialized !`));
+    console.log(chalk.blue(`🎉 Sheweny successfully initialized !`));
     console.log(`You can now run ${chalk.grey("sheweny add")} to create your first component with ths CLI.`);
     console.log(`If you add or change a directory name please update manualy the file cli-config.json `);
     return true;

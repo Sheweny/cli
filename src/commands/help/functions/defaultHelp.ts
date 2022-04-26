@@ -11,21 +11,21 @@ export function defaultHelp() {
                                             |___/ 
 `
   )}
-${chalk.green("Welcome to the command line interface of Sheweny framework !")}
+${chalk.green("Welcome to the command line interface of Sheweny framework !xx")}
 
 ${chalk.yellow("Prefixes:")}
-- ${chalk.magenta("sheweny")}
-- ${chalk.magenta("shw")}
+- ${chalk.blue("sheweny")}
+- ${chalk.blue("shw")}
 
 ${chalk.yellow("Usage:")} 
-- ${chalk.magenta("sheweny")} <command> [options]
+- ${chalk.blue("sheweny")} <command> [options]
 
 ${chalk.yellow("Commands:")}
-- ${chalk.magenta("sheweny")} init - ${chalk.dim("Initialize the CLI in an existing project")}
-- ${chalk.magenta("sheweny")} create [project_name] - ${chalk.dim("Create a new project")}
-- ${chalk.magenta("sheweny")} add <add_type> - ${chalk.dim("Add a new component to the project")}
-- ${chalk.magenta("sheweny")} help [argument] - ${chalk.dim("Display help for a specific command")}
-- ${chalk.magenta("sheweny")} version | --version | -v - ${chalk.dim("Display the version of the CLI")}
+• ${chalk.blue("sheweny")} init                      ${chalk.white("• Initialize the CLI in an existing project")}
+• ${chalk.blue("sheweny")} create [project_name]     ${chalk.white("• Create a new project")}
+• ${chalk.blue("sheweny")} add <add_type>            ${chalk.white("• Add a new component to the project")}
+• ${chalk.blue("sheweny")} help [argument]           ${chalk.white("• Display help for a specific command")}
+• ${chalk.blue("sheweny")} version | --version | -v  ${chalk.white("• Display the version of the CLI")}
 
 `);
 }

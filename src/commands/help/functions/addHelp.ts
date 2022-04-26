@@ -4,10 +4,10 @@ export function addHelp() {
   console.log(`
 ${chalk.blue("Sheweny command line interface : add")}
   
-${chalk.green("Add a new component to your discord bot (event or button etc...)")}.    
+${chalk.blue("Add a new component to your discord bot (event or button etc...)")}.    
 
 ${chalk.yellow("Usage:")}
-${chalk.magenta("sheweny")} add <add_type>
+${chalk.blue("sheweny")} add <add_type>
 
 ${chalk.yellow("Add types:")}
 - command
