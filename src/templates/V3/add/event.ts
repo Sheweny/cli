@@ -8,7 +8,7 @@ export default (options: IAddOptions) => {
 import type { ShewenyClient } from "sheweny";`
   }
 
-${options.config!.template === "javascript" ? "module.exports =" : "export"} class ${options.addName}Event extends Event {
+${options.config!.template === "javascript" ? "module.exports =" : "export"} class  extends Event {
   constructor(client${options.config!.template === "typescript" ? ": ShewenyClient" : ""}) {
     super(client, "${options.addName}", {
       description: "${options.eventOptions.description}",

@@ -9,7 +9,7 @@ import type { ShewenyClient } from "sheweny";
 import type { ButtonInteraction } from "discord.js";`
   }
 
-${options.config!.template === "javascript" ? "module.exports =" : "export"} class ${options.addName}Button extends Button {
+${options.config!.template === "javascript" ? "module.exports =" : "export"} class  extends Button {
   constructor(client${options.config!.template === "typescript" ? ": ShewenyClient" : ""}) {
     super(client, ["customId"]);
   }

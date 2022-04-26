@@ -9,7 +9,7 @@ import type { ShewenyClient } from "sheweny";
 import type { SelectMenuInteraction } from "discord.js";`
   }
 
-${options.config!.template === "javascript" ? "module.exports =" : "export"} class ${options.addName}SelectMenu extends SelectMenu {
+${options.config!.template === "javascript" ? "module.exports =" : "export"} class  extends SelectMenu {
   constructor(client${options.config!.template === "typescript" ? ": ShewenyClient" : ""}) {
     super(client, ["customId"]);
   }
