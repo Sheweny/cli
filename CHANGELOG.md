@@ -2,13 +2,19 @@
 
 **All notable changes to this project will be documented in this file.**
 
-# [[2.1.1]](https://github.com/Sheweny/cli/compare/2.1.0...2.1.1) January 25, 2021
+# [[2.1.2]](https://github.com/Sheweny/cli/compare/2.1.1...2.1.2) April 10, 2022
+
+### Dependencies
+
+- Bump dependencies (security)
+
+# [[2.1.1]](https://github.com/Sheweny/cli/compare/2.1.0...2.1.1) January 25, 2022
 
 ### Fixed
 
 - Fix cooldown command ([ae017d4](https://github.com/Sheweny/cli/commit/ae017d4970a00d0e1dd47d0bcdcf7037c5a89d5e) [41fe8c6](https://github.com/Sheweny/cli/commit/41fe8c624447a552aae80279da452acc181f80e0))
 
-# [[2.1.0]](https://github.com/Sheweny/cli/compare/2.0.3...2.1.0) January 25, 2021
+# [[2.1.0]](https://github.com/Sheweny/cli/compare/2.0.3...2.1.0) January 25, 2022
 
 ### Added
 
