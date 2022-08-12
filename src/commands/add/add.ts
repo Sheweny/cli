@@ -2,7 +2,7 @@ import chalk from "chalk";
 import Listr from "listr";
 import { createTemplate, resolveHandlersDir, checkPath, getTemplateDirectory, getCliConfig } from "./util/index.js";
 import type { IAddOptions } from "../../typescript/interfaces/interfaces";
-export async function addTemplate(options: IAddOptions): Promise<any> {
+export async function addTemplate(options: IAddOptions): Promise<void> {
   console.log("");
 
   const tasks = new Listr([

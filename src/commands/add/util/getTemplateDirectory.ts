@@ -8,7 +8,7 @@ export async function getTemplateDirectory(options: IAddOptions): Promise<IAddOp
   try {
     const curentdir = dirname(fileURLToPath(import.meta.url));
 
-    const templateDir = resolve(curentdir, "../../../templates", `V${options.config?.version || "3"}`, "add", `${options.addType!}.js`);
+    const templateDir = resolve(curentdir, "../../../templates", `V${options.config?.version || "4"}`, "add", `${options.addType!}.js`);
     await access(templateDir, constants.R_OK);
     options = {
       ...options,

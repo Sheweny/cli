@@ -16,7 +16,7 @@ export interface ICreateOptions {
   optionnalLibrary?: string[];
   version?: number;
 }
-export type AddType = "command" | "event" | "button" | "selectmenu" | "inhibitor";
+export type AddType = "command" | "event" | "button" | "selectmenu" | "inhibitor" | "modal";
 export interface IAddOptions {
   addType: AddType;
   addName: string;
@@ -55,6 +55,7 @@ export interface ICliConfig {
     events: string | undefined;
     inhibitors: string | undefined;
     buttons: string | undefined;
+    modals: string | undefined;
     selectMenus: string | undefined;
   };
 }

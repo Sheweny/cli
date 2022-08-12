@@ -38,7 +38,7 @@ export class Project {
         packageManager: "npm",
         handlers: ["commands", "events"],
         configFileType: "json",
-        version: 3,
+        version: 4,
       };
 
     console.log(`\n📜 Please answer the questionnaires to get a better result\n`);
@@ -53,8 +53,8 @@ export class Project {
         type: "list",
         name: "version",
         message: "Please choose a version of Sheweny",
-        choices: ["Version 2", "Version 3"],
-        default: "Version 3",
+        choices: ["Version 2", "Version 3", "Version 4"],
+        default: "Version 4",
       },
       {
         type: "list",
@@ -106,7 +106,7 @@ export class Project {
         type: "checkbox",
         name: "handlers",
         message: "Which handlers do you want to add ?",
-        choices: ["Events", "Commands", "Buttons", "SelectMenus", "Inhibitors"],
+        choices: ["Events", "Commands", "Buttons", "SelectMenus", "Inhibitors", "Modals"],
       },
 
       {
@@ -117,6 +117,9 @@ export class Project {
         default: "Json",
       },
     ]);
+    let version = 4;
+    if (answers.version === "Version 2") version = 2;
+    if (answers.version === "Version 3") version = 3;
     return {
       dirName: this.options.arguments?.join(" ") || answers.dirName.replaceAll(" ", "_"),
       template: answers.template.toLowerCase(),
@@ -126,7 +129,7 @@ export class Project {
       handlers: (answers.handlers as string[]).map((e) => e.toLowerCase()),
       configFileType: answers.configFileType.toLowerCase(),
       optionnalLibrary: answers.optionnalLibrary,
-      version: answers.version == "Version 2" ? 2 : 3,
+      version: version,
     };
   }
   async create(config: ICreateOptions): Promise<void> {

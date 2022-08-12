@@ -4,8 +4,14 @@ import chalk from "chalk";
 import type { ICreateOptions } from "../../../typescript/interfaces/interfaces";
 
 function checkFile(options: ICreateOptions, file: string) {
-  const dirHandlers = ["events", "commands", "buttons", "selectmenus", "inhibitors"];
-  if (file === "interactions" && !options.handlers?.includes("buttons") && !options.handlers?.includes("selectmenus")) return true;
+  const dirHandlers = ["events", "commands", "buttons", "selectmenus", "modals", "inhibitors"];
+  if (
+    file === "interactions" &&
+    !options.handlers?.includes("buttons") &&
+    !options.handlers?.includes("selectmenus") &&
+    !options.handlers?.includes("modals")
+  )
+    return true;
   else if (dirHandlers.includes(file) && !options.handlers?.includes(file)) return true;
   return false;
 }
