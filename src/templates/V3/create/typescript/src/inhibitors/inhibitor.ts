@@ -2,7 +2,7 @@ export default () => {
   return [
     `import { Inhibitor } from "sheweny";
 import type { ShewenyClient } from "sheweny";
-import type { CommandInteraction } from "discord.js";
+import type { Interaction } from "discord.js";
   
 export class BlackListInhibitor extends Inhibitor {
   constructor(client: ShewenyClient) {
@@ -11,12 +11,12 @@ export class BlackListInhibitor extends Inhibitor {
     });
   }
 
-  execute(client: ShewenyClient, interaction: CommandInteraction) {
+  execute(client: ShewenyClient, interaction: Interaction) {
     // Put a guild id
     return !["<guildId>"].includes(interaction.guildId!);
   }
 
-  async onFailure(client:ShewenyClient, interaction: CommandInteraction) {
+  async onFailure(client:ShewenyClient, interaction: Interaction) {
     await interaction.reply("Your guild is blacklisted.");
   }
 };

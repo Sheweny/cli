@@ -35,13 +35,16 @@ export async function addInfosPackageJson(options: ICreateOptions): Promise<void
   /**
    * @description: Add dependencies to package.json
    */
-  const dependencies: any = {
-    "discord.js": "^13.0.0",
-  };
+  const dependencies: any = {};
   if (options.optionnalLibrary?.includes("@discordjs/voice")) dependencies["@discordjs/voice"] = "*";
+
   if (options.version === 2) dependencies["sheweny"] = "^2.0.0";
   if (options.version === 3) dependencies["sheweny"] = "^3.0.0";
+  if (options.version === 4) dependencies["sheweny"] = "^4.0.0";
 
+  if (options.version === 2) dependencies["discord.js"] = "^13.0.0";
+  if (options.version === 3) dependencies["discord.js"] = "^13.0.0";
+  if (options.version === 4) dependencies["discord.js"] = "^14.0.0";
   /**
    * @description: Add devDependencies to package.json
    */

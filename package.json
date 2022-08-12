@@ -1,14 +1,15 @@
 {
   "name": "@sheweny/cli",
   "description": "Cli for sheweny framework",
-  "version": "2.1.2",
+  "version": "2.2.0",
   "main": "bin/sheweny.js",
   "bin": {
     "sheweny": "bin/sheweny.js",
     "shw": "bin/sheweny.js"
   },
   "scripts": {
-    "build": "tsc"
+    "build": "tsc",
+    "test": "shw"
   },
   "repository": {
     "type": "git",

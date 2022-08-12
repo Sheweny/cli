@@ -49,7 +49,7 @@ export class Component {
     const answers: any = await prompt([
       {
         type: "list",
-        choices: ["Command", "Event", "Inhibitor", "Button", "Selectmenu"],
+        choices: ["Command", "Event", "Inhibitor", "Button", "Selectmenu", "Modal"],
         name: "addType",
         message: "What do you want to create ?",
       },

@@ -2,23 +2,6 @@ import { readdir, writeFile } from "fs/promises";
 import chalk from "chalk";
 import inquirer from "inquirer";
 
-/**
- * Export a function for create a json file
- * The file name is cli-config.json
- * Structure of json :
- * {
- * "template": "javascript",
- * "version": 3,
- * "handlers": {
- *  "commands": "src/commands",
- *  "events": "src/events",
- *  "inhibitors": "src/inhibitors",
- *  "buttons": "src/buttons",
- *  "selectMenus": "src/select-menus"
- *  }
- * }
- */
-
 export class Init {
   constructor() {
     this.checkExistingConfig().then(() => {
@@ -46,20 +29,21 @@ export class Init {
         type: "list",
         name: "version",
         message: "What is the of Sheweny ?",
-        choices: ["2", "3"],
+        choices: ["2", "3", "4"],
       },
     ]);
   }
   async createConfig(opts: { template?: string; version?: number } = {}) {
     const config = {
       template: opts.template || "javascript",
-      version: opts.version || 3,
+      version: opts.version || 4,
       handlers: {
         commands: "src/commands",
         events: "src/events",
         inhibitors: "src/inhibitors",
         buttons: "src/buttons",
         selectMenus: "src/select-menus",
+        modals: "src/modals",
       },
     };
     await writeFile(`${process.cwd()}/cli-config.json`, JSON.stringify(config, null, 2));

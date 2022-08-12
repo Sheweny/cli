@@ -36,7 +36,7 @@ export async function cli(args: string[]): Promise<void> {
       await component.create(configComponent);
       break;
     case "version":
-      console.log("Sheweny CLI :", getVersion());
+      console.log("Sheweny CLI:", getVersion());
       break;
     default:
       help(options);

@@ -12,7 +12,7 @@ import type { ShewenyClient } from "sheweny";
 import type { ${importDjs} } from "discord.js";`
     }
 
-${options.config!.template === "javascript" ? "module.exports =" : "export"} class  extends Command {
+${options.config!.template === "javascript" ? "module.exports =" : "export default"} class  extends Command {
   constructor(client${options.config!.template === "typescript" ? ": ShewenyClient" : ""}) {
     super(client, {
         name: "${options.addName.toLowerCase()}",
