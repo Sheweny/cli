@@ -61,8 +61,8 @@
   resolved "https://registry.npmjs.org/@types/ejs/-/ejs-3.1.1.tgz"
 
 "@types/inquirer@^9.0.0":
-  version "9.0.0"
-  resolved "https://registry.npmjs.org/@types/inquirer/-/inquirer-9.0.0.tgz"
+  version "9.0.1"
+  resolved "https://registry.yarnpkg.com/@types/inquirer/-/inquirer-9.0.1.tgz#b816a888dccbf13bd0053e74d89fbd1fa78fc6c2"
   dependencies:
     "@types/through" "*"
     rxjs "^7.2.0"
