@@ -2,7 +2,7 @@ export default () => {
   return [
     `const { Button } = require("sheweny");
 
-module.exports = class ButtonTest extends Button {
+module.exports = class ButtonComponent extends Button {
   constructor(client) {
     super(client, ["primaryId", "secondaryId", "successId", "dangerId"]);
   }

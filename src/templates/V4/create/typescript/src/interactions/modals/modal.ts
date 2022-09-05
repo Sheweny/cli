@@ -4,7 +4,7 @@ export default () => {
 import type { ShewenyClient } from "sheweny";
 import type { ModalSubmitInteraction } from "discord.js";
 
-export class ModalTest extends Modal {
+export class ModalComponent extends Modal {
   constructor(client: ShewenyClient) {
     super(client, ["modal-id"]);
   }
