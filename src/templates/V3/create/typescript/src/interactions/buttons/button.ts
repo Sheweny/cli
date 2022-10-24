@@ -4,7 +4,7 @@ export default () => {
 import type { ShewenyClient } from "sheweny";
 import type { ButtonInteraction } from "discord.js";
 
-export class ButtonTest extends Button {
+export class ButtonComponent extends Button {
   constructor(client: ShewenyClient) {
     super(client, ["primaryId", "secondaryId", "successId", "dangerId"]);
   }

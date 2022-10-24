@@ -4,7 +4,7 @@ export default () => {
 import type { ShewenyClient } from "sheweny";
 import type { SelectMenuInteraction } from "discord.js";
   
-export class SelectTest extends SelectMenu {
+export class SelectComponent extends SelectMenu {
   constructor(client: ShewenyClient) {
     super(client, ["selectId"]);
   }

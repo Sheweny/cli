@@ -2,7 +2,7 @@ export default () => {
   return [
     `const { SelectMenu } = require("sheweny");
   
-module.exports = class SelectTest extends SelectMenu {
+module.exports = class SelectComponent extends SelectMenu {
   constructor(client) {
     super(client, ["selectId"]);
   }
