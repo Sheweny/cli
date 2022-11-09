@@ -61,8 +61,8 @@
   resolved "https://registry.yarnpkg.com/@types/ejs/-/ejs-3.1.1.tgz#29c539826376a65e7f7d672d51301f37ed718f6d"
 
 "@types/inquirer@^9.0.0":
-  version "9.0.2"
-  resolved "https://registry.yarnpkg.com/@types/inquirer/-/inquirer-9.0.2.tgz#846b141c17608aad9fc62572280753bb6ec09184"
+  version "9.0.3"
+  resolved "https://registry.yarnpkg.com/@types/inquirer/-/inquirer-9.0.3.tgz#dc99da4f2f6de9d26c284b4f6aaab4d98c456db1"
   dependencies:
     "@types/through" "*"
     rxjs "^7.2.0"
