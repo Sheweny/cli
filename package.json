@@ -1,7 +1,7 @@
 {
   "name": "@sheweny/cli",
   "description": "Cli for sheweny framework",
-  "version": "2.2.1",
+  "version": "2.2.2",
   "main": "bin/sheweny.js",
   "bin": {
     "sheweny": "bin/sheweny.js",
