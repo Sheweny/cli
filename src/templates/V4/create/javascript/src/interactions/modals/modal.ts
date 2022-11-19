@@ -1,18 +1,17 @@
 export default () => {
   return [
-    `import { Modal, type ShewenyClient } from "sheweny";
-import type { ModalSubmitInteraction } from "discord.js";
-
-export class ModalTest extends Modal {
-  constructor(client: ShewenyClient) {
-    super(client, ["modal-id"]);
+    `const { Modal } = require("sheweny");
+  
+module.exports = class ModalTest extends Modal {
+  constructor(client) {
+    super(client, ["modalId"]);
   }
   
-  async execute(modal: ModalSubmitInteraction) {
-    modal.reply("Modal received.");
+  async execute(modal) {
+    console.log("Modal submitted!");
   }
 };
 `,
-    "modal.ts",
+    "modal.js",
   ];
 };
