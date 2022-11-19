@@ -2,7 +2,7 @@ export default () => {
   return [
     `const { Modal } = require("sheweny");
 
-export class ModalComponent extends Modal {
+module.exports = class ModalComponent extends Modal {
   constructor(client) {
     super(client, ["modal-id"]);
   }
