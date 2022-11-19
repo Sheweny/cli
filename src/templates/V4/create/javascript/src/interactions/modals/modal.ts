@@ -12,6 +12,6 @@ export class ModalComponent extends Modal {
   }
 };
 `,
-    "modal.ts",
+    "modal.js",
   ];
 };
