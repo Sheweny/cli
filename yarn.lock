@@ -75,8 +75,8 @@
     rxjs "^6.5.1"
 
 "@types/node@*", "@types/node@^18.0.0":
-  version "18.11.9"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-18.11.9.tgz#02d013de7058cea16d36168ef2fc653464cfbad4"
+  version "18.11.11"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-18.11.11.tgz#1d455ac0211549a8409d3cdb371cd55cc971e8dc"
 
 "@types/through@*":
   version "0.0.30"
