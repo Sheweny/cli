@@ -42,7 +42,7 @@
     "@types/ejs": "^3.1.0",
     "@types/inquirer": "^9.0.0",
     "@types/listr": "^0.14.4",
-    "@types/node": "^18.0.0",
+    "@types/node": "^20.1.5",
     "eslint": "^8.4.0"
   }
 }
